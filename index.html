@@ -135,9 +135,9 @@
     </section>
 
     <!-- Форма авторизации (над футером) -->
-    <section class="auth-section">
+    <section class="auth-section" id="auth-section">
       <h2>Вход в личный кабинет</h2>
-      <form class="auth-form-inline">
+      <form class="auth-form-inline" id="auth-form">
         <div class="form-group">
           <label for="login">Логин:</label>
           <input type="text" id="login" name="login" required />
@@ -163,23 +163,28 @@
     <p>Адрес: Москва, ул. Бизнес-Ланчей, д. 1</p>
   </footer>
 
-    <script>
-  document.querySelector('.auth-form').addEventListener('submit', function(e) {
-    e.preventDefault(); // отменяем отправку формы
+  <!-- JavaScript для авторизации -->
+  <script>
+    document.getElementById('auth-form').addEventListener('submit', function(e) {
+      e.preventDefault(); // отменяем отправку формы
 
-    const login = document.getElementById('login').value;
-    const password = document.getElementById('password').value;
+      const login = document.getElementById('login').value;
+      const password = document.getElementById('password').value;
 
-    if (login === 'admin' && password === '12345') {
-      alert('Успешный вход!');
-      // Здесь можно скрыть форму или перейти на другую страницу
-      document.querySelector('.auth-overlay').style.display = 'none';
-    } else {
-      alert('Неверный логин или пароль!');
-    }
-  });
-</script>
+      if (login === 'admin' && password === '12345') {
+        alert('Успешный вход!');
+        // Заменяем форму на сообщение об успехе
+        const authSection = document.getElementById('auth-section');
+        authSection.innerHTML = `
+          <div style="text-align: center; padding: 30px; background: #e8f5e9; border-radius: 12px;">
+            <h2 style="color: #27ae60;">Добро пожаловать, ${login}!</h2>
+            <p>Вы успешно вошли в личный кабинет.</p>
+          </div>
+        `;
+      } else {
+        alert('Неверный логин или пароль!');
+      }
+    });
+  </script>
 </body>
 </html>
-
-
