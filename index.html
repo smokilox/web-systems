@@ -179,5 +179,22 @@
     }
   });
 </script>
+  <script>
+  document.querySelector('.auth-form').addEventListener('submit', function(e) {
+    e.preventDefault(); // отменяем отправку формы
+
+    const login = document.getElementById('login').value;
+    const password = document.getElementById('password').value;
+
+    if (login === 'admin' && password === '12345') {
+      alert('Успешный вход!');
+      // Здесь можно скрыть форму или перейти на другую страницу
+      document.querySelector('.auth-overlay').style.display = 'none';
+    } else {
+      alert('Неверный логин или пароль!');
+    }
+  });
+</script>
 </body>
 </html>
+
