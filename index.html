@@ -85,7 +85,7 @@
     <!-- Форма обратной связи -->
     <section class="feedback">
       <h2>Обратная связь</h2>
-      <form id="feedback-form">
+      <form method="POST" action="https://httpbin.org/post" enctype="multipart/form-data">
         <div class="form-group">
           <label for="fullname">ФИО:</label>
           <input type="text" id="fullname" name="fullname" required />
@@ -125,7 +125,7 @@
 
         <div class="form-group checkbox-group">
           <label>
-            <input type="checkbox" name="consent" required />
+            <input type="checkbox" name="consent" value="1" required />
             Даю согласие на обработку персональных данных
           </label>
         </div>
@@ -134,10 +134,10 @@
       </form>
     </section>
 
-    <!-- Форма авторизации (над футером) -->
-    <section class="auth-section" id="auth-section">
+    <!-- Форма авторизации -->
+    <section class="auth-section">
       <h2>Вход в личный кабинет</h2>
-      <form class="auth-form-inline" id="auth-form">
+      <form method="POST" action="https://httpbin.org/post">
         <div class="form-group">
           <label for="login">Логин:</label>
           <input type="text" id="login" name="login" required />
@@ -148,7 +148,7 @@
         </div>
         <div class="form-group checkbox-group">
           <label>
-            <input type="checkbox" name="remember" />
+            <input type="checkbox" name="remember" value="1" />
             Запомнить меня
           </label>
         </div>
@@ -162,29 +162,5 @@
     <p>Email: <a href="mailto:info@lanchibystro.ru">info@lanchibystro.ru</a></p>
     <p>Адрес: Москва, ул. Бизнес-Ланчей, д. 1</p>
   </footer>
-
-  <!-- JavaScript для авторизации -->
-  <script>
-    document.getElementById('auth-form').addEventListener('submit', function(e) {
-      e.preventDefault(); // отменяем отправку формы
-
-      const login = document.getElementById('login').value;
-      const password = document.getElementById('password').value;
-
-      if (login === 'admin' && password === '12345') {
-        alert('Успешный вход!');
-        // Заменяем форму на сообщение об успехе
-        const authSection = document.getElementById('auth-section');
-        authSection.innerHTML = `
-          <div style="text-align: center; padding: 30px; background: #e8f5e9; border-radius: 12px;">
-            <h2 style="color: #27ae60;">Добро пожаловать, ${login}!</h2>
-            <p>Вы успешно вошли в личный кабинет.</p>
-          </div>
-        `;
-      } else {
-        alert('Неверный логин или пароль!');
-      }
-    });
-  </script>
 </body>
 </html>
