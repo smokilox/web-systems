@@ -40,6 +40,22 @@ nav a:hover {
   color: #e74c3c;
 }
 
+/* Кнопка "Вход" в навигации */
+nav .login-btn {
+  background-color: #3498db;
+  color: white !important;
+  padding: 8px 16px;
+  border-radius: 6px;
+  margin-left: 20px;
+  font-weight: 600;
+  transition: background-color 0.3s;
+}
+
+nav .login-btn:hover {
+  background-color: #2980b9;
+  color: white !important;
+}
+
 /* === Основной контент === */
 main {
   padding: 40px 20px;
@@ -138,7 +154,6 @@ section h2 {
 
 .form-group input[type="text"],
 .form-group input[type="email"],
-.form-group input[type="password"],
 .form-group select,
 .form-group textarea {
   width: 100%;
@@ -183,61 +198,6 @@ button {
 
 button:hover {
   background-color: #c0392b;
-}
-
-/* === Форма авторизации (внутри страницы) === */
-.auth-section {
-  max-width: 500px;
-  margin: 60px auto 40px;
-  padding: 30px;
-  background-color: #f9f9f9;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  text-align: center;
-}
-
-.auth-section h2 {
-  margin-bottom: 24px;
-  color: #2c3e50;
-  font-size: 1.8rem;
-}
-
-.auth-form-inline .form-group {
-  text-align: left;
-  margin-bottom: 20px;
-}
-
-.auth-form-inline label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: 500;
-  color: #2c3e50;
-}
-
-.auth-form-inline input[type="text"],
-.auth-form-inline input[type="password"] {
-  width: 100%;
-  padding: 12px;
-  font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-family: 'Montserrat', sans-serif;
-}
-
-.auth-form-inline .checkbox-group {
-  text-align: left;
-  margin: 15px 0;
-}
-
-.auth-form-inline button {
-  width: 100%;
-  padding: 14px;
-  font-size: 1.1rem;
-  background-color: #3498db;
-}
-
-.auth-form-inline button:hover {
-  background-color: #2980b9;
 }
 
 /* === Футер === */
