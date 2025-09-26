@@ -20,10 +20,11 @@
       <a href="menu.html">Меню</a>
       <a href="about.html">О нас</a>
       <a href="#contacts">Контакты</a>
+      <a href="login.html" class="login-btn">Вход</a>
     </nav>
   </header>
 
-  <main>
+  <main id="home">
     <section class="about">
       <h2>О нашей компании</h2>
       <img src="i.jpeg" alt="Доставка бизнес-ланчей в офис" />
@@ -85,7 +86,7 @@
     <!-- Форма обратной связи -->
     <section class="feedback">
       <h2>Обратная связь</h2>
-      <form method="POST" action="https://httpbin.org/post" enctype="multipart/form-data">
+      <form method="POST" action="https://httpbin.org/anything" enctype="multipart/form-data">
         <div class="form-group">
           <label for="fullname">ФИО:</label>
           <input type="text" id="fullname" name="fullname" required />
@@ -131,28 +132,6 @@
         </div>
 
         <button type="submit">Отправить</button>
-      </form>
-    </section>
-
-    <!-- Форма авторизации -->
-    <section class="auth-section">
-      <h2>Вход в личный кабинет</h2>
-      <form method="POST" action="https://httpbin.org/post">
-        <div class="form-group">
-          <label for="login">Логин:</label>
-          <input type="text" id="login" name="login" required />
-        </div>
-        <div class="form-group">
-          <label for="password">Пароль:</label>
-          <input type="password" id="password" name="password" required />
-        </div>
-        <div class="form-group checkbox-group">
-          <label>
-            <input type="checkbox" name="remember" value="1" />
-            Запомнить меня
-          </label>
-        </div>
-        <button type="submit">Войти</button>
       </form>
     </section>
   </main>
