@@ -3,8 +3,8 @@ document.addEventListener('DOMContentLoaded', function () {
   let dishes = []; // Сюда загрузятся блюда с API
   let selected = {
     soup: null,
-    main: null,
-    starter: null,
+    main-course: null,
+    salad: null,
     drink: null,
     dessert: null
   };
@@ -13,8 +13,8 @@ document.addEventListener('DOMContentLoaded', function () {
   // === 2. ПОДКЛЮЧЕНИЕ ЭЛЕМЕНТОВ СТРАНИЦЫ ===
   const grids = {
     soup: document.getElementById('soup-grid'),
-    main: document.getElementById('main-grid'),
-    starter: document.getElementById('starter-grid'),
+    main-course: document.getElementById('main-grid'),
+    salad: document.getElementById('starter-grid'),
     drink: document.getElementById('drink-grid'),
     dessert: document.getElementById('dessert-grid')
   };
@@ -266,6 +266,7 @@ document.addEventListener('DOMContentLoaded', function () {
   // === 8. СТАРТ ПРИЛОЖЕНИЯ ===
   loadDishes();
 });
+
 
 
 
