@@ -38,10 +38,10 @@ document.addEventListener('DOMContentLoaded', function () {
     try {
       // !!! ВАЖНО: ВЫБЕРИТЕ ОДИН ИЗ ДВУХ URL !!!
       // Если вы размещаете сайт на Netlify или GitHub Pages:
-      const apiUrl = 'https://edu.std-900.ist.mospolytech.ru/labs/api/dishes';
+      //const apiUrl = 'https://edu.std-900.ist.mospolytech.ru/labs/api/dishes';
       
       // Если вы используете хостинг от Московского Политеха (раскомментируйте эту строку вместо предыдущей):
-      // const apiUrl = 'http://lab7-api.std-900.ist.mospolytech.ru/api/dishes';
+      const apiUrl = 'http://lab7-api.std-900.ist.mospolytech.ru/api/dishes';
 
       const response = await fetch(apiUrl);
       
@@ -266,3 +266,4 @@ document.addEventListener('DOMContentLoaded', function () {
   // === 8. СТАРТ ПРИЛОЖЕНИЯ ===
   loadDishes();
 });
+
