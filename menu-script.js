@@ -1,10 +1,10 @@
 document.addEventListener('DOMContentLoaded', function () {
   // === 1. ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ===
-  let dishes = []; // Сюда загрузятся блюда с API
+  let dishes = [];
   let selected = {
     soup: null,
-    main-course: null,
-    salad: null,
+    main: null,
+    starter: null,
     drink: null,
     dessert: null
   };
@@ -13,8 +13,8 @@ document.addEventListener('DOMContentLoaded', function () {
   // === 2. ПОДКЛЮЧЕНИЕ ЭЛЕМЕНТОВ СТРАНИЦЫ ===
   const grids = {
     soup: document.getElementById('soup-grid'),
-    main-course: document.getElementById('main-grid'),
-    salad: document.getElementById('starter-grid'),
+    main: document.getElementById('main-grid'),
+    starter: document.getElementById('starter-grid'),
     drink: document.getElementById('drink-grid'),
     dessert: document.getElementById('dessert-grid')
   };
@@ -40,8 +40,8 @@ document.addEventListener('DOMContentLoaded', function () {
       // Если вы размещаете сайт на Netlify или GitHub Pages:
       const apiUrl = 'https://edu.std-900.ist.mospolytech.ru/labs/api/dishes';
       
-      // Если вы используете хостинг от Московского Политеха (раскомментируйте эту строку вместо предыдущей):
-      //const apiUrl = 'http://lab7-api.std-900.ist.mospolytech.ru/api/dishes';
+      // Если вы используете хостинг от Московского Политеха:
+      // const apiUrl = 'http://lab7-api.std-900.ist.mospolytech.ru/api/dishes';
 
       const response = await fetch(apiUrl);
       
@@ -52,11 +52,9 @@ document.addEventListener('DOMContentLoaded', function () {
       dishes = await response.json();
       console.log('✅ Блюда успешно загружены с API:', dishes);
       
-      // Запускаем инициализацию после загрузки данных
       initializeApp();
     } catch (error) {
       console.error('❌ Ошибка при загрузке блюд:', error);
-      // Создаем сообщение об ошибке прямо на странице
       const errorMsg = document.createElement('p');
       errorMsg.textContent = 'Не удалось загрузить меню. Пожалуйста, обновите страницу.';
       errorMsg.style.color = 'red';
@@ -68,28 +66,24 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // === 4. ФУНКЦИЯ ИНИЦИАЛИЗАЦИИ ПРИЛОЖЕНИЯ ===
   function initializeApp() {
-    // Сортируем блюда по названию
     const sortedDishes = [...dishes].sort((a, b) => a.name.localeCompare(b.name));
 
-    // Группируем блюда по категориям
+    // === ИСПРАВЛЕНО: названия категорий согласно API ===
     const groups = {
-  soup: sortedDishes.filter(d => d.category === 'soup'),
-  main: sortedDishes.filter(d => d.category === 'main-course'), // ← Исправлено!
-  starter: sortedDishes.filter(d => d.category === 'salad'),     // ← Исправлено!
-  drink: sortedDishes.filter(d => d.category === 'drink'),
-  dessert: sortedDishes.filter(d => d.category === 'dessert')
-};
+      soup: sortedDishes.filter(d => d.category === 'soup'),
+      main: sortedDishes.filter(d => d.category === 'main-course'), // ← Исправлено
+      starter: sortedDishes.filter(d => d.category === 'salad'),     // ← Исправлено
+      drink: sortedDishes.filter(d => d.category === 'drink'),
+      dessert: sortedDishes.filter(d => d.category === 'dessert')
+    };
 
-    // === РЕНДЕР ОСНОВНОГО КОНТЕНТА ===
     renderAllCategories(groups);
 
-    // === НАСТРОЙКА ОБРАБОТЧИКОВ СОБЫТИЙ ===
-    // 1. Фильтры
+    // Настройка обработчиков
     filterButtons.forEach(btn => {
       btn.addEventListener('click', () => handleFilterClick(btn, groups));
     });
 
-    // 2. Форма заказа
     if (orderForm) {
       orderForm.addEventListener('submit', handleFormSubmit);
     }
@@ -101,14 +95,14 @@ document.addEventListener('DOMContentLoaded', function () {
     div.className = 'dish-item';
     div.dataset.keyword = dish.keyword;
 
-    // Формируем URL для изображения. API обычно не возвращает расширение, поэтому добавим его.
     let imageUrl = dish.image;
     if (!imageUrl.endsWith('.jpg') && !imageUrl.endsWith('.jpeg') && !imageUrl.endsWith('.png')) {
       imageUrl += '.jpg';
     }
 
+    // Убран лишний пробел в onerror
     div.innerHTML = `
-      <img src="${imageUrl}" alt="${dish.name}" onerror="this.src='placeholder.jpg'" />
+      <img src="${imageUrl}" alt="${dish.name}" onerror="this.src='https://via.placeholder.com/300?text=No+Image'" />
       <p class="price">${dish.price}₽</p>
       <p class="name">${dish.name}</p>
       <p class="volume">${dish.count}</p>
@@ -125,7 +119,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const filter = activeFilters[category];
 
     grid.innerHTML = '';
-
     const filteredItems = filter ? items.filter(d => d.kind === filter) : items;
     
     filteredItems.forEach(dish => {
@@ -139,26 +132,20 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function renderAllCategories(groups) {
     renderCategory('soup', groups);
-    renderCategory('main-course', groups);
-    renderCategory('salad', groups);
+    renderCategory('main', groups);
+    renderCategory('starter', groups);
     renderCategory('drink', groups);
     renderCategory('dessert', groups);
   }
 
   // === 6. ОСНОВНАЯ ЛОГИКА ===
   function selectDish(dish, cardElement) {
-    // Снимаем выделение со всех карточек в этой категории
     document.querySelectorAll(`#${dish.category}-grid .dish-item`).forEach(el => {
       el.classList.remove('selected');
     });
 
-    // Обновляем глобальное состояние
     selected[dish.category] = dish;
-    
-    // Добавляем выделение на новую карточку
     cardElement.classList.add('selected');
-
-    // Обновляем отображение заказа
     updateOrderDisplay();
   }
 
@@ -174,16 +161,14 @@ document.addEventListener('DOMContentLoaded', function () {
     orderMessage.style.display = 'none';
     selectedItems.style.display = 'block';
 
-    // Обновляем текст для каждого пункта
     for (const [category, element] of Object.entries(orderDisplay)) {
       if (category === 'total') continue;
       const dish = selected[category];
       element.textContent = dish 
         ? `${dish.name} ${dish.price}₽` 
-        : `${category === 'soup' ? 'Суп' : category === 'main-course' ? 'Блюдо' : category === 'salad' ? 'Стартер' : category === 'drink' ? 'Напиток' : 'Десерт'} не выбран`;
+        : `${category === 'soup' ? 'Суп' : category === 'main' ? 'Блюдо' : category === 'starter' ? 'Стартер' : category === 'drink' ? 'Напиток' : 'Десерт'} не выбран`;
     }
 
-    // Считаем итоговую сумму
     const total = Object.values(selected)
       .filter(Boolean)
       .reduce((sum, dish) => sum + dish.price, 0);
@@ -191,16 +176,14 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function handleFilterClick(button, groups) {
-    const sectionId = button.closest('section').id; // Например, 'soup-section'
-    const category = sectionId.replace('-section', ''); // 'soup'
+    const sectionId = button.closest('section').id;
+    const category = sectionId.replace('-section', '');
     const kind = button.dataset.kind;
 
-    // Убираем активный класс у всех кнопок в этой секции
     document.querySelectorAll(`#${sectionId} .filter-btn`).forEach(btn => {
       btn.classList.remove('active');
     });
 
-    // Устанавливаем или снимаем фильтр
     if (activeFilters[category] === kind) {
       delete activeFilters[category];
     } else {
@@ -208,7 +191,6 @@ document.addEventListener('DOMContentLoaded', function () {
       button.classList.add('active');
     }
 
-    // Перерисовываем категорию
     renderCategory(category, groups);
   }
 
@@ -224,24 +206,23 @@ document.addEventListener('DOMContentLoaded', function () {
     `;
     document.body.appendChild(overlay);
 
-    // Закрытие по кнопке или клику на оверлей
     overlay.querySelector('.popup-btn').addEventListener('click', () => overlay.remove());
     overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
   }
 
   function validateOrder() {
-    const { soup, main-course, salad, drink, dessert } = selected;
-    const hasAny = soup || main-course || salad || drink || dessert;
+    const { soup, main, starter, drink, dessert } = selected;
+    const hasAny = soup || main || starter || drink || dessert;
     
     if (!hasAny) {
       showPopup('Ничего не выбрано. Выберите блюда для заказа');
       return false;
     }
-    if ((soup || main-course || salad) && !drink) {
+    if ((soup || main || starter) && !drink) {
       showPopup('Выберите напиток');
       return false;
     }
-    if (soup && !main-course && !salad) {
+    if (soup && !main && !starter) {
       showPopup('Выберите главное блюдо/салат/стартер');
       return false;
     }
@@ -249,7 +230,7 @@ document.addEventListener('DOMContentLoaded', function () {
       showPopup('Выберите суп или главное блюдо');
       return false;
     }
-    if ((drink || dessert) && !main-course && !soup && !salad) {
+    if ((drink || dessert) && !main && !soup && !starter) {
       showPopup('Выберите главное блюдо');
       return false;
     }
@@ -266,8 +247,3 @@ document.addEventListener('DOMContentLoaded', function () {
   // === 8. СТАРТ ПРИЛОЖЕНИЯ ===
   loadDishes();
 });
-
-
-
-
-
