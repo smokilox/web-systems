@@ -73,12 +73,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Группируем блюда по категориям
     const groups = {
-      soup: sortedDishes.filter(d => d.category === 'soup'),
-      main: sortedDishes.filter(d => d.category === 'main'),
-      starter: sortedDishes.filter(d => d.category === 'starter'),
-      drink: sortedDishes.filter(d => d.category === 'drink'),
-      dessert: sortedDishes.filter(d => d.category === 'dessert')
-    };
+  soup: sortedDishes.filter(d => d.category === 'soup'),
+  main: sortedDishes.filter(d => d.category === 'main-course'), // ← Исправлено!
+  starter: sortedDishes.filter(d => d.category === 'salad'),     // ← Исправлено!
+  drink: sortedDishes.filter(d => d.category === 'drink'),
+  dessert: sortedDishes.filter(d => d.category === 'dessert')
+};
 
     // === РЕНДЕР ОСНОВНОГО КОНТЕНТА ===
     renderAllCategories(groups);
@@ -139,8 +139,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function renderAllCategories(groups) {
     renderCategory('soup', groups);
-    renderCategory('main', groups);
-    renderCategory('starter', groups);
+    renderCategory('main-course', groups);
+    renderCategory('salad', groups);
     renderCategory('drink', groups);
     renderCategory('dessert', groups);
   }
@@ -180,7 +180,7 @@ document.addEventListener('DOMContentLoaded', function () {
       const dish = selected[category];
       element.textContent = dish 
         ? `${dish.name} ${dish.price}₽` 
-        : `${category === 'soup' ? 'Суп' : category === 'main' ? 'Блюдо' : category === 'starter' ? 'Стартер' : category === 'drink' ? 'Напиток' : 'Десерт'} не выбран`;
+        : `${category === 'soup' ? 'Суп' : category === 'main-course' ? 'Блюдо' : category === 'salad' ? 'Стартер' : category === 'drink' ? 'Напиток' : 'Десерт'} не выбран`;
     }
 
     // Считаем итоговую сумму
@@ -230,18 +230,18 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function validateOrder() {
-    const { soup, main, starter, drink, dessert } = selected;
-    const hasAny = soup || main || starter || drink || dessert;
+    const { soup, main-course, salad, drink, dessert } = selected;
+    const hasAny = soup || main-course || salad || drink || dessert;
     
     if (!hasAny) {
       showPopup('Ничего не выбрано. Выберите блюда для заказа');
       return false;
     }
-    if ((soup || main || starter) && !drink) {
+    if ((soup || main-course || salad) && !drink) {
       showPopup('Выберите напиток');
       return false;
     }
-    if (soup && !main && !starter) {
+    if (soup && !main-course && !salad) {
       showPopup('Выберите главное блюдо/салат/стартер');
       return false;
     }
@@ -249,7 +249,7 @@ document.addEventListener('DOMContentLoaded', function () {
       showPopup('Выберите суп или главное блюдо');
       return false;
     }
-    if ((drink || dessert) && !main && !soup && !starter) {
+    if ((drink || dessert) && !main-course && !soup && !salad) {
       showPopup('Выберите главное блюдо');
       return false;
     }
@@ -266,6 +266,7 @@ document.addEventListener('DOMContentLoaded', function () {
   // === 8. СТАРТ ПРИЛОЖЕНИЯ ===
   loadDishes();
 });
+
 
 
 
