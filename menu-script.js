@@ -108,7 +108,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     div.innerHTML = `
-      <img src="${imageUrl}" alt="${dish.name}" onerror="this.src='https://via.placeholder.com/300?text=No+Image'" />
+      <img src="${imageUrl}" alt="${dish.name}" onerror="this.src='placeholder.jpg'" />
       <p class="price">${dish.price}₽</p>
       <p class="name">${dish.name}</p>
       <p class="volume">${dish.count}</p>
@@ -266,5 +266,6 @@ document.addEventListener('DOMContentLoaded', function () {
   // === 8. СТАРТ ПРИЛОЖЕНИЯ ===
   loadDishes();
 });
+
 
 
