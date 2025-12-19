@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Собрать ланч — ЛанчиБыстро</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="menu-styles.css" />
+  <link rel="stylesheet" href="print.css" media="print" />
+</head>
+<body>
+  <header>
+    <h1>ЛанчиБыстро</h1>
+    <nav>
+      <a href="index.html">Главная</a>
+      <a href="menu.html" class="active">Собрать ланч</a>
+      <a href="about.html">О нас</a>
+      <a href="#contacts">Контакты</a>
+      <a href="login.html" class="login-btn">Вход</a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Супы -->
+    <section id="soup-section" class="soup-section">
+      <h2>Выберите суп</h2>
+      <div class="filters">
+        <button class="filter-btn" data-kind="fish">рыбный</button>
+        <button class="filter-btn" data-kind="meat">мясной</button>
+        <button class="filter-btn" data-kind="veg">вегетарианский</button>
+      </div>
+      <div class="dishes-grid" id="soup-grid"></div>
+    </section>
+
+    <!-- Главные блюда -->
+    <section id="main-section" class="main-dish-section">
+      <h2>Выберите главное блюдо</h2>
+      <div class="filters">
+        <button class="filter-btn" data-kind="fish">рыбное</button>
+        <button class="filter-btn" data-kind="meat">мясное</button>
+        <button class="filter-btn" data-kind="veg">вегетарианское</button>
+      </div>
+      <div class="dishes-grid" id="main-grid"></div>
+    </section>
+
+    <!-- Салаты и стартеры -->
+    <section id="starter-section" class="starter-section">
+      <h2>Выберите салат или стартер</h2>
+      <div class="filters">
+        <button class="filter-btn" data-kind="fish">рыбный</button>
+        <button class="filter-btn" data-kind="meat">мясной</button>
+        <button class="filter-btn" data-kind="veg">вегетарианский</button>
+      </div>
+      <div class="dishes-grid" id="starter-grid"></div>
+    </section>
+
+    <!-- Напитки -->
+    <section id="drink-section" class="drink-section">
+      <h2>Выберите напиток</h2>
+      <div class="filters">
+        <button class="filter-btn" data-kind="cold">холодный</button>
+        <button class="filter-btn" data-kind="hot">горячий</button>
+      </div>
+      <div class="dishes-grid" id="drink-grid"></div>
+    </section>
+
+    <!-- Десерты -->
+    <section id="dessert-section" class="dessert-section">
+      <h2>Выберите десерт</h2>
+      <div class="filters">
+        <button class="filter-btn" data-kind="small">маленькая порция</button>
+        <button class="filter-btn" data-kind="medium">средняя порция</button>
+        <button class="filter-btn" data-kind="large">большая порция</button>
+      </div>
+      <div class="dishes-grid" id="dessert-grid"></div>
+    </section>
+
+    <!-- Комбо (без изменений) -->
+    <section id="combo-options" class="combo-options">
+      <h2>Доступные для заказа комбо</h2>
+      <div class="combos-grid">
+        <div class="combo-item">
+          <div class="combo-dish"><img src="супы.png" alt="Суп" class="combo-img"><span class="combo-label">Суп</span></div>
+          <div class="combo-dish"><img src="главбл.png" alt="Главное блюдо" class="combo-img"><span class="combo-label">Главное блюдо</span></div>
+          <div class="combo-dish"><img src="Салат.png" alt="Салат" class="combo-img"><span class="combo-label">Салат</span></div>
+          <div class="combo-dish"><img src="напитки.png" alt="Напиток" class="combo-img"><span class="combo-label">Напиток</span></div>
+        </div>
+        <div class="combo-item">
+          <div class="combo-dish"><img src="супы.png" alt="Суп" class="combo-img"><span class="combo-label">Суп</span></div>
+          <div class="combo-dish"><img src="главбл.png" alt="Главное блюдо" class="combo-img"><span class="combo-label">Главное блюдо</span></div>
+          <div class="combo-dish"><img src="напитки.png" alt="Напиток" class="combo-img"><span class="combo-label">Напиток</span></div>
+        </div>
+        <div class="combo-item">
+          <div class="combo-dish"><img src="супы.png" alt="Суп" class="combo-img"><span class="combo-label">Суп</span></div>
+          <div class="combo-dish"><img src="Салат.png" alt="Салат" class="combo-img"><span class="combo-label">Салат</span></div>
+          <div class="combo-dish"><img src="напитки.png" alt="Напиток" class="combo-img"><span class="combo-label">Напиток</span></div>
+        </div>
+        <div class="combo-item">
+          <div class="combo-dish"><img src="главбл.png" alt="Главное блюдо" class="combo-img"><span class="combo-label">Главное блюдо</span></div>
+          <div class="combo-dish"><img src="Салат.png" alt="Салат" class="combo-img"><span class="combo-label">Салат</span></div>
+          <div class="combo-dish"><img src="напитки.png" alt="Напиток" class="combo-img"><span class="combo-label">Напиток</span></div>
+        </div>
+        <div class="combo-item">
+          <div class="combo-dish"><img src="главбл.png" alt="Главное блюдо" class="combo-img"><span class="combo-label">Главное блюдо</span></div>
+          <div class="combo-dish"><img src="напитки.png" alt="Напиток" class="combo-img"><span class="combo-label">Напиток</span></div>
+        </div>
+        <div class="combo-item dessert-info">
+          <div class="combo-dish"><img src="Десерт.png" alt="Десерт" class="combo-img"><span class="combo-label">Десерт</span><span class="combo-note">(Можно добавить к любому заказу)</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Панель перехода к оформлению заказа -->
+    <div id="go-to-order-panel" class="go-to-order-panel" style="display: none;">
+      <p>Стоимость: <span id="panel-total">0 ₽</span></p>
+      <a href="order.html" id="go-to-order-link" class="btn-submit disabled">Перейти к оформлению</a>
+    </div>
+  </main>
+
+  <footer id="contacts">
+    <p>Телефон: <a href="tel:+74951234567">+7 (495) 123-45-67</a></p>
+    <p>Email: <a href="mailto:info@lanchibystro.ru">info@lanchibystro.ru</a></p>
+    <p>Адрес: Москва, ул. Бизнес-Ланчей, д. 1</p>
+  </footer>
+
+  <script src="config.js"></script>
+  <script src="dishes.js"></script>
+  <script src="menu-script.js"></script>
+</body>
+</html>
