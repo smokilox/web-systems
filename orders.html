@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Заказы — ЛанчиБыстро</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="menu-styles.css" />
+  <style>
+    .orders-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    .orders-table th,
+    .orders-table td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    .orders-table th {
+      background-color: #f8f9fa;
+      font-weight: 600;
+    }
+    .actions {
+      display: flex;
+      gap: 8px;
+    }
+    .btn-icon {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1.2rem;
+      padding: 4px;
+      color: #6c757d;
+    }
+    .btn-icon:hover {
+      color: #212529;
+    }
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .modal-content {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      max-width: 500px;
+      width: 90%;
+      position: relative;
+    }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .close-btn {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #6c757d;
+    }
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .modal-footer button {
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .btn-primary {
+      background-color: #3498db;
+      color: white;
+      border: none;
+    }
+    .btn-secondary {
+      background-color: #6c757d;
+      color: white;
+      border: none;
+    }
+    .btn-danger {
+      background-color: #e74c3c;
+      color: white;
+      border: none;
+    }
+    .loading {
+      text-align: center;
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>ЛанчиБыстро</h1>
+    <nav>
+      <a href="index.html">Главная</a>
+      <a href="menu.html">Собрать ланч</a>
+      <a href="order.html">Оформить заказ</a>
+      <a href="orders.html" class="active">Заказы</a>
+      <a href="#contacts">Контакты</a>
+      <a href="login.html" class="login-btn">Вход</a>
+    </nav>
+  </header>
+
+  <main style="padding: 20px;">
+    <h2>История заказов</h2>
+    <div id="orders-container">
+      <div class="loading">Загрузка заказов...</div>
+    </div>
+  </main>
+
+  <footer id="contacts">
+    <p>Телефон: <a href="tel:+74951234567">+7 (495) 123-45-67</a></p>
+    <p>Email: <a href="mailto:info@lanchibystro.ru">info@lanchibystro.ru</a></p>
+  </footer>
+
+  <script src="config.js"></script>
+  <script src="orders-script.js"></script>
+</body>
+</html>
