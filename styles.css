@@ -170,6 +170,7 @@ section h2 {
 
 .form-group input[type="radio"] {
   margin-right: 8px;
+  width: 10px;
 }
 
 .form-group input[type="file"] {
@@ -178,11 +179,12 @@ section h2 {
 
 .checkbox-group label {
   display: flex;
-  align-items: center;
+  align-items: normal;
   gap: 8px;
   font-weight: normal;
   cursor: pointer;
   white-space: nowrap;
+  width: 10px;
 }
 
 .checkbox-group input[type="checkbox"] {

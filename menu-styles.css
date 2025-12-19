@@ -276,3 +276,134 @@
   cursor: not-allowed;
   pointer-events: none;
 }
+/* === Оранжевые кнопки для ЛР 8 и ЛР 9 === */
+
+/* Основные кнопки */
+.btn-submit,
+.btn-reset,
+button[type="submit"],
+button[type="reset"],
+.popup-btn,
+.remove-btn,
+.edit-btn,
+.delete-btn,
+.view-btn,
+.btn-icon,
+.btn-primary,
+.btn-secondary,
+.btn-danger {
+  background-color: #e67e22 !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 6px;
+}
+
+/* Состояние при наведении */
+.btn-submit:hover,
+.btn-reset:hover,
+button[type="submit"]:hover,
+button[type="reset"]:hover,
+.popup-btn:hover,
+.remove-btn:hover,
+.edit-btn:hover,
+.delete-btn:hover,
+.view-btn:hover,
+.btn-icon:hover,
+.btn-primary:hover,
+.btn-secondary:hover,
+.btn-danger:hover {
+  background-color: #d35400 !important;
+  cursor: pointer;
+}
+
+/* Кнопки в модальных окнах (ЛР9) */
+.modal-footer button {
+  background-color: #e67e22 !important;
+  color: white !important;
+  border: none !important;
+  padding: 8px 16px;
+  border-radius: 4px;
+  margin-left: 8px;
+}
+
+.modal-footer button:hover {
+  background-color: #d35400 !important;
+}
+
+/* Панель перехода к оформлению (ЛР8) */
+#go-to-order-link {
+  background-color: #e67e22 !important;
+  color: white !important;
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  display: inline-block;
+  text-align: center;
+}
+
+#go-to-order-link:hover {
+  background-color: #d35400 !important;
+  color: white !important;
+}
+
+#go-to-order-link.disabled {
+  background-color: #bdc3c7 !important;
+  color: white !important;
+  pointer-events: none;
+}
+
+/* Кнопка "Добавить" на карточках блюд */
+.add-btn,
+.remove-btn {
+  background-color: #e67e22 !important;
+  color: white !important;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.add-btn:hover,
+.remove-btn:hover {
+  background-color: #d35400 !important;
+}
+/* === Оранжевые фильтры блюд (ЛР8) === */
+
+/* Основной стиль фильтров */
+.filter-btn {
+  background-color: #f9e0bb !important; /* Светло-оранжевый фон */
+  color: #d35400 !important;             /* Тёмно-оранжевый текст */
+  border: 1px solid #d35400 !important;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+/* При наведении */
+.filter-btn:hover {
+  background-color: #f5c795 !important;
+  color: #b04200 !important;
+}
+
+/* Активный фильтр — ярко-оранжевый */
+.filter-btn.active {
+  background-color: #e67e22 !important; /* Яркий оранжевый */
+  color: white !important;
+  border-color: #d35400 !important;
+  font-weight: 600;
+}
+
+/* Активный фильтр при наведении */
+.filter-btn.active:hover {
+  background-color: #d35400 !important;
+}
+
+
+
+
+
