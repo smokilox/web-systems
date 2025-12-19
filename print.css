@@ -1,0 +1,70 @@
+/* print.css */
+header,
+nav,
+.footer,
+.form-actions,
+.checkbox-group,
+.radio-group,
+input[type="radio"],
+input[type="checkbox"],
+input[type="file"],
+button {
+  display: none !important;
+}
+
+body {
+  font-size: 12pt;
+  line-height: 1.5;
+  color: #000;
+  background: #fff;
+}
+
+h1, h2, h3 {
+  page-break-after: avoid;
+}
+
+p, li, td, th {
+  orphans: 2;
+  widows: 2;
+}
+
+* {
+  background: transparent !important;
+  box-shadow: none !important;
+  border: 1px solid #000 !important;
+}
+
+img {
+  filter: grayscale(100%);
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: #000;
+  text-decoration: underline;
+}
+
+body, main, section, div {
+  margin: 0;
+  padding: 0;
+}
+
+.dish-item {
+  border-radius: 0;
+  filter: none;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  padding: 6px;
+  border: 1px solid #000;
+}
+
+* {
+  overflow: visible !important;
+}
