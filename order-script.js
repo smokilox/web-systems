@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', async function () {
-  const API_KEY = window.API_KEY || 'ВАШ_API_KEY';
+  const API_KEY = window.API_KEY || '0e55ab01-f559-4713-9470-81feb98eb9b7';
   const API_BASE = 'https://edu.std-900.ist.mospolytech.ru';
 
   const saved = JSON.parse(localStorage.getItem('selectedDishes') || '{}');
