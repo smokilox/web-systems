@@ -1,35 +1,37 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Бизнес-ланчи на заказ — Москва</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ЛанчиБыстро — Доставка бизнес-ланчей в Москве</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="print.css" media="print" />
 </head>
 <body>
   <header>
     <h1>ЛанчиБыстро</h1>
     <nav>
-      <a href="#top">Главная</a>
-      <a href="#popular">Меню</a>
-      <a href="#about">О нас</a>
+      <a href="index.html" class="active">Главная</a>
+      <a href="menu.html">Собрать ланч</a>
+      <a href="about.html">О нас</a>
       <a href="#contacts">Контакты</a>
+      <a href="login.html" class="login-btn">Вход</a>
     </nav>
   </header>
 
-  <!-- Метка для "Главная" — в начале контента -->
-  <main id="top">
-    <!-- Секция: О компании -->
-    <section id="about" class="about">
+  <main id="home">
+    <section class="about">
       <h2>О нашей компании</h2>
-      <img src="i.jpeg" alt="Доставка бизнес-ланчей в офис">
-      <p>Мы — компания «ЛанчиБыстро», специализирующаяся на доставке свежих, вкусных и сбалансированных бизнес-ланчей по Москве. Наши повара готовят блюда из качественных продуктов, а курьеры доставляют заказы точно в срок — чтобы вы могли наслаждаться обедом без стресса.</p>
+      <img src="i.jpeg" alt="Доставка бизнес-ланчей в офис" />
+      <p>
+        Мы — компания «ЛанчиБыстро», специализирующаяся на доставке свежих, вкусных и сбалансированных бизнес-ланчей по
+        Москве. Наши повара готовят блюда из качественных продуктов, а курьеры доставляют заказы точно в срок.
+      </p>
     </section>
 
-    <!-- Секция: Преимущества -->
     <section class="advantages">
       <h2>Наши преимущества</h2>
       <ul>
@@ -39,8 +41,7 @@
       </ul>
     </section>
 
-    <!-- Секция: Популярные блюда -->
-    <section id="popular" class="popular">
+    <section class="popular">
       <h2>Популярные блюда</h2>
       <table>
         <thead>
@@ -78,6 +79,57 @@
           </tr>
         </tbody>
       </table>
+    </section>
+
+    <section class="feedback">
+      <h2>Обратная связь</h2>
+      <form method="POST" action="https://httpbin.org/anything" enctype="multipart/form-data">
+        <div class="form-group">
+          <label for="fullname">ФИО:</label>
+          <input type="text" id="fullname" name="fullname" required />
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input type="email" id="email" name="email" required />
+        </div>
+
+        <div class="form-group">
+          <p>Откуда узнали о нас:</p>
+          <label><input type="radio" name="source" value="social" required /> Соцсети</label>
+          <label><input type="radio" name="source" value="friends" /> От друзей</label>
+          <label><input type="radio" name="source" value="ads" /> Реклама</label>
+          <label><input type="radio" name="source" value="other" /> Другое</label>
+        </div>
+
+        <div class="form-group">
+          <label for="type">Тип обращения:</label>
+          <select id="type" name="type" required>
+            <option value="">— Выберите —</option>
+            <option value="complaint">Жалоба</option>
+            <option value="suggestion">Предложение</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="message">Сообщение:</label>
+          <textarea id="message" name="message" rows="5" required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="attachment">Вложения (необязательно):</label>
+          <input type="file" id="attachment" name="attachment" accept=".jpg,.jpeg,.png,.pdf,.doc,.docx" />
+        </div>
+
+        <div class="form-group checkbox-group">
+          <label>
+            <input type="checkbox" name="consent" value="1" required />
+            Даю согласие на обработку персональных данных
+          </label>
+        </div>
+
+        <button type="submit">Отправить</button>
+      </form>
     </section>
   </main>
 
