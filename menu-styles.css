@@ -1,0 +1,253 @@
+/* === Карточки блюд === */
+.dishes-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.dish-item {
+  background-color: white;
+  padding: 30px 40px;
+  border-radius: 35px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.dish-item img {
+  width: 100%;
+  border-radius: 35px;
+  margin-bottom: 15px;
+}
+
+.dish-item .price {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.dish-item .name {
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin-bottom: 5px;
+  text-align: center;
+}
+
+.dish-item .volume {
+  color: #777;
+  font-size: 0.9rem;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.dish-item button {
+  background-color: #f1eee9;
+  border: none;
+  padding: 10px 30px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 500;
+  margin-top: 10px;
+  transition: background-color 0.3s;
+}
+
+.dish-item:hover {
+  border: 2px solid #e9ecef;
+}
+
+.dish-item.selected {
+  border: 2px solid tomato;
+}
+
+.dish-item.selected .add-btn {
+  background-color: #e1dcd7;
+}
+
+.dish-item.selected .add-btn::after {
+  content: ' Выбрано';
+  font-size: 0.8rem;
+  color: #333;
+  margin-left: 5px;
+}
+
+/* === Фильтры === */
+.filters {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.filter-btn {
+  background-color: #f1eee9;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.3s;
+}
+
+.filter-btn:hover {
+  background-color: #e1dcd7;
+}
+
+.filter-btn.active {
+  background-color: #27ae60;
+  color: white;
+  border: 2px solid white;
+}
+
+/* === Форма заказа === */
+.order-form {
+  margin-top: 60px;
+}
+
+.order-form h2 {
+  margin-bottom: 30px;
+}
+
+.form-container {
+  display: flex;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.form-column {
+  flex: 1;
+  min-width: 300px;
+}
+
+.form-column h3 {
+  margin-bottom: 20px;
+  font-size: 1.3rem;
+  color: #2c3e50;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #2c3e50;
+}
+
+.form-group select,
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 12px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.radio-group {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.radio-group.vertical {
+  flex-direction: column;
+  gap: 10px;
+}
+
+.radio-group.vertical label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.btn-reset,
+.btn-submit {
+  padding: 12px 24px;
+  font-size: 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  border: none;
+}
+
+.btn-reset {
+  background-color: #95a5a6;
+  color: white;
+}
+
+.btn-reset:hover {
+  background-color: #7f8c8d;
+}
+
+.btn-submit {
+  background-color: #3498db;
+  color: white;
+}
+
+.btn-submit:hover {
+  background-color: #2980b9;
+}
+
+/* Адаптивность */
+@media (max-width: 800px) {
+  .dishes-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .form-container {
+    flex-direction: column;
+  }
+  .form-column {
+    min-width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .dishes-grid {
+    grid-template-columns: 1fr;
+  }
+  header h1 {
+    font-size: 2rem;
+    text-align: center;
+  }
+  nav {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  nav a {
+    width: 80%;
+    text-align: center;
+  }
+  section h2 {
+    font-size: 1.8rem;
+    text-align: center;
+  }
+  .dish-item {
+    padding: 20px;
+    border-radius: 20px;
+  }
+  .dish-item .price {
+    font-size: 1.1rem;
+  }
+  .dish-item .name {
+    font-size: 1rem;
+  }
+  .dish-item .volume {
+    font-size: 0.85rem;
+  }
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    padding: 10px;
+  }
+}
