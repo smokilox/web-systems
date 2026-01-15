@@ -1,162 +1,178 @@
 // catalog.js
-import { fetchGoods } from './api.js';
+import { fetchGoods, fetchGoodById } from './api.js';
 
-let currentPage = 1;
-let totalItems = 0;
-let itemsPerPage = 10;
+let allGoods = [];
 let currentSortOrder = 'rating_desc';
-let currentFilters = {
-    categories: [],
-    priceFrom: 100,
-    priceTo: 5000,
-    discountOnly: false
-};
 
 document.addEventListener('DOMContentLoaded', () => {
-    loadGoods();
-    setupEventListeners();
+  loadAllGoods();
+  setupEventListeners();
+  updateCartCount();
 });
 
 function setupEventListeners() {
-    document.querySelector('.search-bar button')?.addEventListener('click', searchGoods);
-    document.getElementById('sort-order')?.addEventListener('change', (e) => {
-        currentSortOrder = e.target.value;
-        resetAndReload();
-    });
-    document.querySelector('.apply-button')?.addEventListener('click', applyFilters);
-    document.getElementById('load-more')?.addEventListener('click', loadMoreGoods);
-    document.getElementById('cart-icon')?.addEventListener('click', () => window.location.href = 'cart.html');
-    document.getElementById('account-icon')?.addEventListener('click', () => window.location.href = 'orders.html');
-    document.getElementById('notification-close')?.addEventListener('click', hideNotification);
+  document.querySelector('.apply-button')?.addEventListener('click', applyFiltersAndRender);
+  document.getElementById('sort-order')?.addEventListener('change', (e) => {
+    currentSortOrder = e.target.value;
+    applyFiltersAndRender();
+  });
+  document.getElementById('cart-icon')?.addEventListener('click', () => window.location.href = 'cart.html');
+  document.getElementById('account-icon')?.addEventListener('click', () => window.location.href = 'orders.html');
+  document.getElementById('notification-close')?.addEventListener('click', hideNotification);
 }
 
-async function loadGoods() {
-    try {
-        const params = {
-            page: currentPage,
-            per_page: itemsPerPage,
-            sort_order: currentSortOrder
-        };
+async function loadAllGoods() {
+  try {
+    const data = await fetchGoods({ page: 1, per_page: 100 });
+    allGoods = data.goods || [];
+    updateCategoryFilter();
+    applyFiltersAndRender();
+  } catch (error) {
+    showNotification('Ошибка загрузки товаров', 'error');
+  }
+}
 
-        if (currentFilters.categories.length > 0) {
-            params.category = currentFilters.categories;
-        }
-        if (currentFilters.priceFrom) params.price_from = currentFilters.priceFrom;
-        if (currentFilters.priceTo < Infinity) params.price_to = currentFilters.priceTo;
-        if (currentFilters.discountOnly) params.discount_only = true;
-
-        const data = await fetchGoods(params);
-
-        if (data._pagination) {
-            totalItems = data._pagination.total_count;
-            itemsPerPage = data._pagination.per_page;
-        }
-
-        displayGoods(data.goods);
-        updateLoadMoreButton();
-    } catch (error) {
-        showNotification('Ошибка загрузки товаров: ' + error.message, 'error');
+function updateCategoryFilter() {
+  const categories = new Set();
+  allGoods.forEach(good => {
+    if (good.main_category) {
+      categories.add(good.main_category.toLowerCase());
     }
+  });
+
+  const container = document.getElementById('categories-filter');
+  if (!container) return;
+
+  container.innerHTML = '';
+  Array.from(categories).sort().forEach(cat => {
+    const label = document.createElement('label');
+    label.innerHTML = `<input type="checkbox" value="${cat}"> ${cat.charAt(0).toUpperCase() + cat.slice(1)}`;
+    container.appendChild(label);
+  });
 }
 
-function displayGoods(goods) {
-    const container = document.getElementById('goods-grid');
-    if (!container) return;
+function applyFiltersAndRender() {
+  let filtered = [...allGoods];
 
-    goods.forEach(good => {
-        const ratingStars = Array.from({length: 5}, (_, i) =>
-            `<span class="${i < Math.floor(good.rating) ? 'star' : 'star empty'}">★</span>`
-        ).join('');
-
-        let priceHtml = '';
-        if (good.discount_price && good.discount_price < good.actual_price) {
-            const disc = Math.round(((good.actual_price - good.discount_price) / good.actual_price) * 100);
-            priceHtml = `
-                <div class="good-price">
-                    <span class="actual-price">${good.discount_price} ₽</span>
-                    <span class="discount-price">${good.actual_price} ₽</span>
-                    <span class="discount-percent">-${disc}%</span>
-                </div>
-            `;
-        } else {
-            priceHtml = `<div class="good-price"><span class="actual-price">${good.actual_price} ₽</span></div>`;
-        }
-
-        const card = document.createElement('div');
-        card.className = 'good-card';
-        card.innerHTML = `
-            <img src="${good.image_url || 'https://via.placeholder.com/200'}" alt="${good.name}" class="good-image">
-            <div class="good-info">
-                <h3 class="good-name">${good.name}</h3>
-                <div class="good-rating">
-                    <span>${good.rating.toFixed(1)}</span>
-                    <div class="rating-stars">${ratingStars}</div>
-                </div>
-                ${priceHtml}
-                <button class="add-to-cart" data-id="${good.id}">Добавить</button>
-            </div>
-        `;
-        container.appendChild(card);
-    });
-
-    document.querySelectorAll('.add-to-cart').forEach(btn =>
-        btn.addEventListener('click', (e) => {
-            const id = e.target.dataset.id;
-            let cart = JSON.parse(localStorage.getItem('cart')) || [];
-            if (!cart.includes(id)) {
-                cart.push(id);
-                localStorage.setItem('cart', JSON.stringify(cart));
-                showNotification('Товар добавлен в корзину', 'success');
-            }
-        })
+  // Категории
+  const selectedCategories = Array.from(document.querySelectorAll('#categories-filter input[type="checkbox"]:checked'))
+    .map(cb => cb.value);
+  if (selectedCategories.length > 0) {
+    filtered = filtered.filter(good =>
+      selectedCategories.includes(good.main_category?.toLowerCase())
     );
+  }
+
+  // Цена
+  const priceFrom = parseInt(document.getElementById('price-from')?.value) || 0;
+  const priceTo = parseInt(document.getElementById('price-to')?.value) || Infinity;
+  filtered = filtered.filter(good => {
+    const price = good.discount_price ?? good.actual_price;
+    return price >= priceFrom && price <= priceTo;
+  });
+
+  // Только со скидкой
+  const discountOnly = document.getElementById('discount-only')?.checked;
+  if (discountOnly) {
+    filtered = filtered.filter(good =>
+      good.discount_price != null && good.discount_price < good.actual_price
+    );
+  }
+
+  // Сортировка
+  filtered.sort((a, b) => {
+    const aPrice = a.discount_price ?? a.actual_price;
+    const bPrice = b.discount_price ?? b.actual_price;
+    const aRating = a.rating ?? 0;
+    const bRating = b.rating ?? 0;
+
+    switch (currentSortOrder) {
+      case 'price_asc': return aPrice - bPrice;
+      case 'price_desc': return bPrice - aPrice;
+      case 'rating_asc': return aRating - bRating;
+      case 'rating_desc':
+      default: return bRating - aRating;
+    }
+  });
+
+  renderGoods(filtered);
 }
 
-function updateLoadMoreButton() {
-    const btn = document.getElementById('load-more');
-    if (!btn) return;
-    const totalPages = Math.ceil(totalItems / itemsPerPage);
-    btn.style.display = (currentPage < totalPages) ? 'block' : 'none';
+function renderGoods(goods) {
+  const container = document.getElementById('goods-grid');
+  if (!container) return;
+
+  container.innerHTML = '';
+  if (goods.length === 0) {
+    container.innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:40px;">Товары не найдены</p>';
+    return;
+  }
+
+  goods.forEach(good => {
+    const ratingStars = Array.from({length: 5}, (_, i) =>
+      `<span class="${i < Math.floor(good.rating) ? 'star' : 'star empty'}">★</span>`
+    ).join('');
+
+    let priceHtml = '';
+    if (good.discount_price && good.discount_price < good.actual_price) {
+      const disc = Math.round(((good.actual_price - good.discount_price) / good.actual_price) * 100);
+      priceHtml = `
+        <div class="good-price">
+          <span class="actual-price">${good.discount_price} ₽</span>
+          <span class="discount-price">${good.actual_price} ₽</span>
+          <span class="discount-percent">-${disc}%</span>
+        </div>
+      `;
+    } else {
+      priceHtml = `<div class="good-price"><span class="actual-price">${good.actual_price} ₽</span></div>`;
+    }
+
+    const card = document.createElement('div');
+    card.className = 'good-card';
+    card.innerHTML = `
+      <img src="${good.image_url?.trim() || 'https://via.placeholder.com/200'}" alt="${good.name}" class="good-image">
+      <div class="good-info">
+        <h3 class="good-name">${good.name}</h3>
+        <div class="good-rating">
+          <span>${good.rating?.toFixed(1) || '0.0'}</span>
+          <div class="rating-stars">${ratingStars}</div>
+        </div>
+        ${priceHtml}
+        <button class="add-to-cart" data-id="${good.id}">Добавить</button>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+
+  document.querySelectorAll('.add-to-cart').forEach(btn =>
+    btn.addEventListener('click', (e) => {
+      const id = e.target.dataset.id;
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+      if (!cart.includes(id)) {
+        cart.push(id);
+        localStorage.setItem('cart', JSON.stringify(cart));
+        updateCartCount();
+        showNotification('Товар добавлен в корзину', 'success');
+      }
+    })
+  );
 }
 
-function loadMoreGoods() {
-    currentPage++;
-    loadGoods();
+function updateCartCount() {
+  const count = JSON.parse(localStorage.getItem('cart'))?.length || 0;
+  const el = document.getElementById('cart-count');
+  if (el) el.textContent = count;
 }
 
-function applyFilters() {
-    currentFilters.categories = Array.from(document.querySelectorAll('input[type="checkbox"][value]'))
-        .filter(cb => cb.checked && ['electronics','computers','phones','tablets','accessories'].includes(cb.value))
-        .map(cb => cb.value);
-    
-    currentFilters.priceFrom = parseInt(document.getElementById('price-from')?.value) || 0;
-    currentFilters.priceTo = parseInt(document.getElementById('price-to')?.value) || Infinity;
-    currentFilters.discountOnly = document.getElementById('discount-only')?.checked || false;
-
-    resetAndReload();
-}
-
-function resetAndReload() {
-    currentPage = 1;
-    document.getElementById('goods-grid').innerHTML = '';
-    loadGoods();
-}
-
-function searchGoods() {
-    const term = document.querySelector('.search-bar input')?.value.trim();
-    if (term) showNotification(`Поиск: "${term}"`, 'info');
-}
-
-// Уведомления
 function showNotification(message, type = 'info') {
-    const n = document.getElementById('notification');
-    if (!n) return;
-    n.querySelector('#notification-message').textContent = message;
-    n.className = `notification ${type} show`;
-    setTimeout(hideNotification, 5000);
+  const n = document.getElementById('notification');
+  if (!n) return;
+  n.querySelector('#notification-message').textContent = message;
+  n.className = `notification ${type} show`;
+  setTimeout(hideNotification, 5000);
 }
 
 function hideNotification() {
-    const n = document.getElementById('notification');
-    if (n) n.classList.remove('show');
+  const n = document.getElementById('notification');
+  if (n) n.classList.remove('show');
 }

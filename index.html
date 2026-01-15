@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Техномагазин - Главная</title>
+    <title>Техномагазин — Главная</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -12,11 +12,11 @@
         <div class="header-container">
             <div class="logo">Техномагазин</div>
             <div class="search-bar">
-                <input type="text" placeholder="Введите запрос">
+                <input type="text" placeholder="Поиск товаров...">
                 <button>Найти</button>
             </div>
             <div class="header-icons">
-                <div class="icon" id="cart-icon">🛒</div>
+                <div class="icon" id="cart-icon">🛒 <span id="cart-count">0</span></div>
                 <div class="icon" id="account-icon">👤</div>
             </div>
         </div>
@@ -34,31 +34,37 @@
             <!-- Сайдбар -->
             <div class="sidebar">
                 <h3>Фильтры</h3>
+                
                 <div class="filter-section">
                     <h4>Категории</h4>
-                    <div class="checkbox-group">
-                        <label><input type="checkbox" value="electronics"> Электроника</label>
-                        <label><input type="checkbox" value="computers"> Компьютеры</label>
-                        <label><input type="checkbox" value="phones"> Смартфоны</label>
-                        <label><input type="checkbox" value="tablets"> Планшеты</label>
-                        <label><input type="checkbox" value="accessories"> Аксессуары</label>
+                    <div class="checkbox-group" id="categories-filter">
+                        <!-- Категории будут загружены автоматически -->
                     </div>
                 </div>
+                
                 <div class="filter-section">
                     <h4>Стоимость</h4>
                     <div class="price-filter">
-                        <div><label>От</label><input type="number" id="price-from" value="100" min="0"></div>
-                        <div><label>До</label><input type="number" id="price-to" value="5000" min="0"></div>
+                        <div>
+                            <label>От</label>
+                            <input type="number" id="price-from" value="0" min="0">
+                        </div>
+                        <div>
+                            <label>До</label>
+                            <input type="number" id="price-to" value="10000" min="0">
+                        </div>
                     </div>
                 </div>
+                
                 <div class="filter-section">
                     <div class="checkbox-group">
                         <label><input type="checkbox" id="discount-only"> Только товары со скидками</label>
                     </div>
                 </div>
+                
                 <button class="apply-button">Применить</button>
             </div>
-
+            
             <!-- Каталог товаров -->
             <div class="catalog">
                 <div class="catalog-header">
@@ -70,8 +76,13 @@
                         <option value="price_desc">По убыванию цены</option>
                     </select>
                 </div>
-                <div class="goods-grid" id="goods-grid"></div>
-                <button class="load-more" id="load-more">Загрузить ещё</button>
+                
+                <div class="goods-grid" id="goods-grid">
+                    <div class="loading">Загрузка товаров...</div>
+                </div>
+                
+                <!-- Кнопка "Загрузить ещё" скрыта, так как используется клиентская фильтрация -->
+                <!-- <button class="load-more" id="load-more">Загрузить ещё</button> -->
             </div>
         </div>
     </div>
@@ -84,7 +95,7 @@
         </div>
     </footer>
 
-    <!-- Модальные окна -->
+    <!-- Модальные окна (можно оставить для orders.html, но на главной не используются) -->
     <div class="modal-overlay" id="view-order-modal">
         <div class="modal">
             <div class="modal-header">
