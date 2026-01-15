@@ -1,90 +1,1137 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Бизнес-ланчи на заказ — Москва</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Техномагазин - Главная страница</title>
+    <style>
+        /* Общие стили */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Хедер */
+        header {
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #0066cc;
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            flex-grow: 1;
+            margin: 0 20px;
+        }
+
+        .search-bar input {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px 0 0 4px;
+            font-size: 14px;
+        }
+
+        .search-bar button {
+            padding: 10px 15px;
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .header-icons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .icon {
+            font-size: 24px;
+            cursor: pointer;
+            color: #333;
+        }
+
+        .icon:hover {
+            color: #0066cc;
+        }
+
+        /* Уведомления */
+        .notification {
+            position: fixed;
+            top: 70px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 4px;
+            color: white;
+            z-index: 1000;
+            max-width: 300px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transform: translateX(120%);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            background-color: #4CAF50;
+        }
+
+        .notification.error {
+            background-color: #f44336;
+        }
+
+        .notification.info {
+            background-color: #2196F3;
+        }
+
+        .notification-close {
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* Основной контент */
+        .main-content {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        /* Сайдбар */
+        .sidebar {
+            width: 250px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .sidebar h3 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .filter-section {
+            margin-bottom: 20px;
+        }
+
+        .filter-section h4 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .checkbox-group {
+            margin-bottom: 15px;
+        }
+
+        .checkbox-group label {
+            display: block;
+            margin-bottom: 5px;
+            cursor: pointer;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            margin-right: 5px;
+        }
+
+        .price-filter {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .price-filter input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        .price-filter label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .apply-button {
+            width: 100%;
+            padding: 10px;
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .apply-button:hover {
+            background-color: #0055aa;
+        }
+
+        /* Каталог товаров */
+        .catalog {
+            flex-grow: 1;
+        }
+
+        .catalog-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .catalog-title {
+            font-size: 24px;
+            color: #333;
+        }
+
+        .sort-dropdown {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .goods-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .good-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .good-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .good-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background-color: #f0f0f0;
+        }
+
+        .good-info {
+            padding: 15px;
+        }
+
+        .good-name {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .good-rating {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .rating-stars {
+            display: flex;
+            margin-left: 5px;
+        }
+
+        .star {
+            color: #ffd700;
+            font-size: 14px;
+        }
+
+        .star.empty {
+            color: #ddd;
+        }
+
+        .good-price {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .actual-price {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            margin-right: 10px;
+        }
+
+        .discount-price {
+            text-decoration: line-through;
+            color: #999;
+            margin-right: 5px;
+        }
+
+        .discount-percent {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        .add-to-cart {
+            width: 100%;
+            padding: 10px;
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+
+        .add-to-cart:hover {
+            background-color: #0055aa;
+        }
+
+        .load-more {
+            width: 100%;
+            padding: 12px;
+            background-color: #f0f0f0;
+            color: #333;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            text-align: center;
+            transition: background-color 0.3s;
+        }
+
+        .load-more:hover {
+            background-color: #e0e0e0;
+        }
+
+        /* Футер */
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 20px 0;
+            margin-top: 40px;
+            text-align: center;
+            position: sticky;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .footer-text {
+            font-size: 14px;
+        }
+
+        /* Модальные окна */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 200;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            width: 100%;
+            max-width: 500px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            position: relative;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .modal-close {
+            font-size: 24px;
+            cursor: pointer;
+            color: #999;
+        }
+
+        .modal-close:hover {
+            color: #333;
+        }
+
+        .modal-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-label {
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .form-input {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .form-textarea {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .form-checkbox input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+
+        .btn-primary {
+            background-color: #0066cc;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #0055aa;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .search-bar {
+                width: 100%;
+                margin: 0;
+            }
+
+            .main-content {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+            }
+
+            .goods-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+
+            .catalog-header {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .modal {
+                width: 90%;
+                margin: 0 5%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-container {
+                padding: 10px;
+            }
+
+            .logo {
+                font-size: 20px;
+            }
+
+            .search-bar input {
+                font-size: 12px;
+            }
+
+            .search-bar button {
+                font-size: 12px;
+                padding: 8px 10px;
+            }
+
+            .sidebar {
+                padding: 15px;
+            }
+
+            .filter-section h4 {
+                font-size: 16px;
+            }
+
+            .catalog-title {
+                font-size: 20px;
+            }
+
+            .good-card {
+                margin-bottom: 15px;
+            }
+
+            .good-image {
+                height: 150px;
+            }
+
+            .good-info {
+                padding: 10px;
+            }
+
+            .good-name {
+                font-size: 14px;
+            }
+
+            .good-price {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .actual-price {
+                font-size: 16px;
+            }
+
+            .modal {
+                width: 95%;
+                margin: 0 2.5%;
+                padding: 15px;
+            }
+
+            .modal-title {
+                font-size: 18px;
+            }
+
+            .form-input {
+                font-size: 12px;
+            }
+
+            .form-textarea {
+                font-size: 12px;
+            }
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <h1>ЛанчиБыстро</h1>
-    <nav>
-      <a href="#top">Главная</a>
-      <a href="#popular">Меню</a>
-      <a href="#about">О нас</a>
-      <a href="#contacts">Контакты</a>
-    </nav>
-  </header>
+    <!-- Хедер -->
+    <header>
+        <div class="header-container">
+            <div class="logo">Техномагазин</div>
+            <div class="search-bar">
+                <input type="text" placeholder="Введите запрос">
+                <button>Найти</button>
+            </div>
+            <div class="header-icons">
+                <div class="icon" id="cart-icon">🛒</div>
+                <div class="icon" id="account-icon">👤</div>
+            </div>
+        </div>
+    </header>
 
-  <!-- Метка для "Главная" — в начале контента -->
-  <main id="top">
-    <!-- Секция: О компании -->
-    <section id="about" class="about">
-      <h2>О нашей компании</h2>
-      <img src="i.jpeg" alt="Доставка бизнес-ланчей в офис">
-      <p>Мы — компания «ЛанчиБыстро», специализирующаяся на доставке свежих, вкусных и сбалансированных бизнес-ланчей по Москве. Наши повара готовят блюда из качественных продуктов, а курьеры доставляют заказы точно в срок — чтобы вы могли наслаждаться обедом без стресса.</p>
-    </section>
+    <!-- Уведомление -->
+    <div class="notification" id="notification">
+        <span id="notification-message">Текст сообщения</span>
+        <span class="notification-close" id="notification-close">×</span>
+    </div>
 
-    <!-- Секция: Преимущества -->
-    <section class="advantages">
-      <h2>Наши преимущества</h2>
-      <ul>
-        <li>Быстрая доставка — в течение 45 минут</li>
-        <li>Свежие продукты и ежедневное меню</li>
-        <li>Гибкая система заказа — соберите ланч сами</li>
-      </ul>
-    </section>
+    <!-- Основной контент -->
+    <div class="container">
+        <div class="main-content">
+            <!-- Сайдбар -->
+            <div class="sidebar">
+                <h3>Фильтры</h3>
+                
+                <div class="filter-section">
+                    <h4>Категории</h4>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" value="electronics"> Электроника</label>
+                        <label><input type="checkbox" value="computers"> Компьютеры</label>
+                        <label><input type="checkbox" value="phones"> Смартфоны</label>
+                        <label><input type="checkbox" value="tablets"> Планшеты</label>
+                        <label><input type="checkbox" value="accessories"> Аксессуары</label>
+                    </div>
+                </div>
+                
+                <div class="filter-section">
+                    <h4>Стоимость</h4>
+                    <div class="price-filter">
+                        <div>
+                            <label>От</label>
+                            <input type="number" id="price-from" value="100" min="0">
+                        </div>
+                        <div>
+                            <label>До</label>
+                            <input type="number" id="price-to" value="5000" min="0">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="filter-section">
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" id="discount-only"> Только товары со скидками</label>
+                    </div>
+                </div>
+                
+                <button class="apply-button">Применить</button>
+            </div>
+            
+            <!-- Каталог товаров -->
+            <div class="catalog">
+                <div class="catalog-header">
+                    <h2 class="catalog-title">Каталог</h2>
+                    <select class="sort-dropdown" id="sort-order">
+                        <option value="rating_desc">По убыванию рейтинга</option>
+                        <option value="rating_asc">По возрастанию рейтинга</option>
+                        <option value="price_asc">По возрастанию цены</option>
+                        <option value="price_desc">По убыванию цены</option>
+                    </select>
+                </div>
+                
+                <div class="goods-grid" id="goods-grid">
+                    <!-- Товары будут загружены через JavaScript -->
+                </div>
+                
+                <button class="load-more" id="load-more">Загрузить ещё</button>
+            </div>
+        </div>
+    </div>
 
-    <!-- Секция: Популярные блюда -->
-    <section id="popular" class="popular">
-      <h2>Популярные блюда</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Название</th>
-            <th>Описание</th>
-            <th>Цена</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Курица гриль</td>
-            <td>Куриное филе, запечённое на гриле с овощами</td>
-            <td>350 ₽</td>
-          </tr>
-          <tr>
-            <td>Лосось с рисом</td>
-            <td>Филе лосося с бурым рисом и соусом терияки</td>
-            <td>420 ₽</td>
-          </tr>
-          <tr>
-            <td>Паста Болоньезе</td>
-            <td>Спагетти с мясным соусом и пармезаном</td>
-            <td>380 ₽</td>
-          </tr>
-          <tr>
-            <td>Овощное рагу</td>
-            <td>Тушёные сезонные овощи с травами</td>
-            <td>320 ₽</td>
-          </tr>
-          <tr>
-            <td>Говядина в соусе</td>
-            <td>Мягкая говядина в пряном соусе с картофельным пюре</td>
-            <td>450 ₽</td>
-          </tr>
-        </tbody>
-      </table>
-    </section>
-  </main>
+    <!-- Футер -->
+    <footer>
+        <div class="footer-content">
+            <p class="footer-text">© 2025 Техномагазин. Все права защищены.</p>
+            <p class="footer-text">Контакты: info@technomagazin.ru | +7 (495) 123-45-67</p>
+        </div>
+    </footer>
 
-  <footer id="contacts">
-    <p>Телефон: <a href="tel:+74951234567">+7 (495) 123-45-67</a></p>
-    <p>Email: <a href="mailto:info@lanchibystro.ru">info@lanchibystro.ru</a></p>
-    <p>Адрес: Москва, ул. Бизнес-Ланчей, д. 1</p>
-  </footer>
+    <!-- Модальное окно просмотра заказа -->
+    <div class="modal-overlay" id="view-order-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Просмотр заказа</h3>
+                <span class="modal-close" id="view-order-close">×</span>
+            </div>
+            <div class="modal-form">
+                <div class="form-group">
+                    <label class="form-label">Дата оформления</label>
+                    <div id="view-order-date">06.01.2025 12:43</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Имя</label>
+                    <div id="view-order-name">Иванов Иван</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Номер телефона</label>
+                    <div id="view-order-phone">+74952230523</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <div id="view-order-email">example@mospolytech.ru</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Адрес доставки</label>
+                    <div id="view-order-address">ул. Большая Семёновская, 38</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Дата доставки</label>
+                    <div id="view-order-delivery-date">11.01.2025</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Время доставки</label>
+                    <div id="view-order-delivery-time">18:00-22:00</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Состав заказа</label>
+                    <div id="view-order-items">Название товара 1, Название товара 2, ...</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Стоимость</label>
+                    <div id="view-order-total">6500 ₽</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Комментарий</label>
+                    <div id="view-order-comment">Текст комментария</div>
+                </div>
+                <div class="modal-buttons">
+                    <button class="btn btn-secondary" id="view-order-ok">Ок</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно редактирования заказа -->
+    <div class="modal-overlay" id="edit-order-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Редактирование заказа</h3>
+                <span class="modal-close" id="edit-order-close">×</span>
+            </div>
+            <div class="modal-form">
+                <div class="form-group">
+                    <label class="form-label">Дата оформления</label>
+                    <div id="edit-order-date">06.01.2025 12:43</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Имя</label>
+                    <input type="text" class="form-input" id="edit-order-name" value="Иванов Иван">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Номер телефона</label>
+                    <input type="text" class="form-input" id="edit-order-phone" value="+74952230523">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-input" id="edit-order-email" value="example@mospolytech.ru">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Адрес доставки</label>
+                    <input type="text" class="form-input" id="edit-order-address" value="ул. Большая Семёновская, 38">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Дата доставки</label>
+                    <input type="date" class="form-input" id="edit-order-delivery-date" value="2025-01-11">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Время доставки</label>
+                    <select class="form-input" id="edit-order-delivery-time">
+                        <option value="08:00-12:00">08:00-12:00</option>
+                        <option value="12:00-18:00">12:00-18:00</option>
+                        <option value="18:00-22:00" selected>18:00-22:00</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Состав заказа</label>
+                    <div id="edit-order-items">Название товара 1, Название товара 2, ...</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Стоимость</label>
+                    <div id="edit-order-total">6500 ₽</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Комментарий</label>
+                    <textarea class="form-textarea" id="edit-order-comment">Текст комментария</textarea>
+                </div>
+                <div class="modal-buttons">
+                    <button class="btn btn-secondary" id="edit-order-cancel">Отмена</button>
+                    <button class="btn btn-primary" id="edit-order-save">Сохранить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно удаления заказа -->
+    <div class="modal-overlay" id="delete-order-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Удаление заказа</h3>
+                <span class="modal-close" id="delete-order-close">×</span>
+            </div>
+            <div class="modal-form">
+                <p>Вы уверены, что хотите удалить заказ?</p>
+                <div class="modal-buttons">
+                    <button class="btn btn-secondary" id="delete-order-no">Нет</button>
+                    <button class="btn btn-danger" id="delete-order-yes">Да</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Глобальные переменные
+        const API_KEY = '0e55ab01-f559-4713-9470-81feb98eb9b7';
+        const BASE_URL = 'https://webdev-exam.std-900.ist.mospolytech.ru/exam-2024-1/api';
+        
+        let currentPage = 1;
+        let totalItems = 0;
+        let itemsPerPage = 10;
+        let currentSortOrder = 'rating_desc';
+        let currentFilters = {
+            categories: [],
+            priceFrom: 100,
+            priceTo: 5000,
+            discountOnly: false
+        };
+
+        // Инициализация при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            loadGoods();
+            setupEventListeners();
+        });
+
+        // Настройка обработчиков событий
+        function setupEventListeners() {
+            // Поиск
+            document.querySelector('.search-bar button').addEventListener('click', searchGoods);
+            
+            // Сортировка
+            document.getElementById('sort-order').addEventListener('change', function() {
+                currentSortOrder = this.value;
+                currentPage = 1;
+                document.getElementById('goods-grid').innerHTML = '';
+                loadGoods();
+            });
+            
+            // Применить фильтры
+            document.querySelector('.apply-button').addEventListener('click', applyFilters);
+            
+            // Загрузить еще
+            document.getElementById('load-more').addEventListener('click', loadMoreGoods);
+            
+            // Корзина и личный кабинет
+            document.getElementById('cart-icon').addEventListener('click', function() {
+                window.location.href = 'cart.html';
+            });
+            
+            document.getElementById('account-icon').addEventListener('click', function() {
+                window.location.href = 'orders.html';
+            });
+            
+            // Модальные окна
+            document.getElementById('view-order-close').addEventListener('click', closeViewOrderModal);
+            document.getElementById('view-order-ok').addEventListener('click', closeViewOrderModal);
+            
+            document.getElementById('edit-order-close').addEventListener('click', closeEditOrderModal);
+            document.getElementById('edit-order-cancel').addEventListener('click', closeEditOrderModal);
+            document.getElementById('edit-order-save').addEventListener('click', saveEditedOrder);
+            
+            document.getElementById('delete-order-close').addEventListener('click', closeDeleteOrderModal);
+            document.getElementById('delete-order-no').addEventListener('click', closeDeleteOrderModal);
+            document.getElementById('delete-order-yes').addEventListener('click', confirmDeleteOrder);
+            
+            // Уведомления
+            document.getElementById('notification-close').addEventListener('click', hideNotification);
+        }
+
+        // Загрузка товаров
+        async function loadGoods() {
+            try {
+                const url = new URL(`${BASE_URL}/goods`);
+                url.searchParams.append('page', currentPage);
+                url.searchParams.append('per_page', itemsPerPage);
+                url.searchParams.append('sort_order', currentSortOrder);
+                
+                // Добавляем фильтры
+                if (currentFilters.categories.length > 0) {
+                    currentFilters.categories.forEach(cat => url.searchParams.append('category', cat));
+                }
+                if (currentFilters.priceFrom !== null) {
+                    url.searchParams.append('price_from', currentFilters.priceFrom);
+                }
+                if (currentFilters.priceTo !== null) {
+                    url.searchParams.append('price_to', currentFilters.priceTo);
+                }
+                if (currentFilters.discountOnly) {
+                    url.searchParams.append('discount_only', 'true');
+                }
+                
+                const response = await fetch(url.toString(), {
+                    headers: {
+                        'X-API-KEY': API_KEY
+                    }
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`Ошибка HTTP: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                // Обновляем информацию о пагинации
+                if (data._pagination) {
+                    totalItems = data._pagination.total_count;
+                    itemsPerPage = data._pagination.per_page;
+                }
+                
+                // Отображаем товары
+                displayGoods(data.goods);
+                
+                // Обновляем кнопку "Загрузить ещё"
+                updateLoadMoreButton();
+                
+            } catch (error) {
+                showNotification('Ошибка при загрузке товаров: ' + error.message, 'error');
+            }
+        }
+
+        // Отображение товаров
+        function displayGoods(goods) {
+            const goodsGrid = document.getElementById('goods-grid');
+            
+            goods.forEach(good => {
+                const goodCard = document.createElement('div');
+                goodCard.className = 'good-card';
+                
+                // Рейтинг в звездочках
+                const ratingStars = Array.from({length: 5}, (_, i) => {
+                    const starClass = i < Math.floor(good.rating) ? 'star' : 'star empty';
+                    return `<span class="${starClass}">★</span>`;
+                }).join('');
+                
+                // Цена (со скидкой или без)
+                let priceHtml = '';
+                if (good.discount_price && good.discount_price < good.actual_price) {
+                    const discountPercent = Math.round(((good.actual_price - good.discount_price) / good.actual_price) * 100);
+                    priceHtml = `
+                        <div class="good-price">
+                            <span class="actual-price">${good.discount_price} ₽</span>
+                            <span class="discount-price">${good.actual_price} ₽</span>
+                            <span class="discount-percent">-${discountPercent}%</span>
+                        </div>
+                    `;
+                } else {
+                    priceHtml = `
+                        <div class="good-price">
+                            <span class="actual-price">${good.actual_price} ₽</span>
+                        </div>
+                    `;
+                }
+                
+                goodCard.innerHTML = `
+                    <img src="${good.image_url || 'https://via.placeholder.com/200'}" alt="${good.name}" class="good-image">
+                    <div class="good-info">
+                        <h3 class="good-name">${good.name}</h3>
+                        <div class="good-rating">
+                            <span>${good.rating.toFixed(1)}</span>
+                            <div class="rating-stars">${ratingStars}</div>
+                        </div>
+                        ${priceHtml}
+                        <button class="add-to-cart" data-id="${good.id}">Добавить</button>
+                    </div>
+                `;
+                
+                goodsGrid.appendChild(goodCard);
+            });
+            
+            // Добавляем обработчики для кнопок "Добавить"
+            document.querySelectorAll('.add-to-cart').forEach(button => {
+                button.addEventListener('click', addToCart);
+            });
+        }
+
+        // Обновление кнопки "Загрузить ещё"
+        function updateLoadMoreButton() {
+            const loadMoreButton = document.getElementById('load-more');
+            const totalPages = Math.ceil(totalItems / itemsPerPage);
+            
+            if (currentPage >= totalPages) {
+                loadMoreButton.style.display = 'none';
+            } else {
+                loadMoreButton.style.display = 'block';
+            }
+        }
+
+        // Загрузка следующей страницы товаров
+        function loadMoreGoods() {
+            currentPage++;
+            loadGoods();
+        }
+
+        // Поиск товаров
+        function searchGoods() {
+            const searchTerm = document.querySelector('.search-bar input').value.trim();
+            if (!searchTerm) {
+                showNotification('Введите поисковый запрос', 'info');
+                return;
+            }
+            
+            // В реальном приложении здесь нужно было бы отправить запрос на сервер с параметром search
+            // Для демонстрации просто показываем уведомление
+            showNotification(`Поиск по запросу "${searchTerm}"`, 'info');
+        }
+
+        // Применение фильтров
+        function applyFilters() {
+            // Получаем значения фильтров
+            currentFilters.categories = Array.from(document.querySelectorAll('input[value="electronics"], input[value="computers"], input[value="phones"], input[value="tablets"], input[value="accessories"]'))
+                .filter(cb => cb.checked)
+                .map(cb => cb.value);
+            
+            currentFilters.priceFrom = parseInt(document.getElementById('price-from').value) || 0;
+            currentFilters.priceTo = parseInt(document.getElementById('price-to').value) || Infinity;
+            currentFilters.discountOnly = document.getElementById('discount-only').checked;
+            
+            // Сбрасываем страницу и загружаем товары с новыми фильтрами
+            currentPage = 1;
+            document.getElementById('goods-grid').innerHTML = '';
+            loadGoods();
+        }
+
+        // Добавление товара в корзину
+        function addToCart(event) {
+            const goodId = event.target.dataset.id;
+            
+            // Получаем текущую корзину из localStorage
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            
+            // Проверяем, не добавлен ли уже этот товар
+            if (!cart.includes(goodId)) {
+                cart.push(goodId);
+                localStorage.setItem('cart', JSON.stringify(cart));
+                showNotification('Товар добавлен в корзину', 'success');
+            } else {
+                showNotification('Этот товар уже в корзине', 'info');
+            }
+        }
+
+        // Показ уведомления
+        function showNotification(message, type = 'info') {
+            const notification = document.getElementById('notification');
+            const notificationMessage = document.getElementById('notification-message');
+            
+            notificationMessage.textContent = message;
+            notification.className = `notification ${type} show`;
+            
+            // Автоматическое скрытие через 5 секунд
+            setTimeout(() => {
+                hideNotification();
+            }, 5000);
+        }
+
+        // Скрытие уведомления
+        function hideNotification() {
+            const notification = document.getElementById('notification');
+            notification.classList.remove('show');
+        }
+
+        // Закрытие модального окна просмотра заказа
+        function closeViewOrderModal() {
+            document.getElementById('view-order-modal').classList.remove('active');
+        }
+
+        // Закрытие модального окна редактирования заказа
+        function closeEditOrderModal() {
+            document.getElementById('edit-order-modal').classList.remove('active');
+        }
+
+        // Закрытие модального окна удаления заказа
+        function closeDeleteOrderModal() {
+            document.getElementById('delete-order-modal').classList.remove('active');
+        }
+
+        // Сохранение отредактированного заказа
+        function saveEditedOrder() {
+            // В реальном приложении здесь нужно было бы отправить PUT-запрос на сервер
+            showNotification('Заказ успешно сохранен', 'success');
+            closeEditOrderModal();
+        }
+
+        // Подтверждение удаления заказа
+        function confirmDeleteOrder() {
+            // В реальном приложении здесь нужно было бы отправить DELETE-запрос на сервер
+            showNotification('Заказ успешно удален', 'success');
+            closeDeleteOrderModal();
+        }
+    </script>
 </body>
 </html>

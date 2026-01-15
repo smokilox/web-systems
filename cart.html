@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Техномагазин - Корзина</title>
+    <style>
+        /* Общие стили */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Хедер */
+        header {
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #0066cc;
+        }
+
+        .header-icons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .icon {
+            font-size: 24px;
+            cursor: pointer;
+            color: #333;
+        }
+
+        .icon:hover {
+            color: #0066cc;
+        }
+
+        /* Уведомления */
+        .notification {
+            position: fixed;
+            top: 70px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 4px;
+            color: white;
+            z-index: 1000;
+            max-width: 300px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transform: translateX(120%);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            background-color: #4CAF50;
+        }
+
+        .notification.error {
+            background-color: #f44336;
+        }
+
+        .notification.info {
+            background-color: #2196F3;
+        }
+
+        .notification-close {
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* Основной контент */
+        .main-content {
+            margin-top: 20px;
+        }
+
+        .cart-header {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        /* Корзина товаров */
+        .cart-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .cart-item {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .cart-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .cart-item-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background-color: #f0f0f0;
+        }
+
+        .cart-item-info {
+            padding: 15px;
+        }
+
+        .cart-item-name {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .cart-item-rating {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .cart-item-stars {
+            display: flex;
+            margin-left: 5px;
+        }
+
+        .star {
+            color: #ffd700;
+            font-size: 14px;
+        }
+
+        .star.empty {
+            color: #ddd;
+        }
+
+        .cart-item-price {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .cart-item-actual-price {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            margin-right: 10px;
+        }
+
+        .cart-item-discount-price {
+            text-decoration: line-through;
+            color: #999;
+            margin-right: 5px;
+        }
+
+        .cart-item-discount-percent {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        .remove-from-cart {
+            width: 100%;
+            padding: 10px;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+
+        .remove-from-cart:hover {
+            background-color: #c82333;
+        }
+
+        .empty-cart {
+            text-align: center;
+            padding: 40px;
+            font-size: 18px;
+            color: #666;
+        }
+
+        /* Оформление заказа */
+        .order-form {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .order-form-header {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .form-group {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .form-textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-bottom: 10px;
+        }
+
+        .form-checkbox input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+        }
+
+        .total-cost {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 20px 0;
+            text-align: right;
+        }
+
+        .delivery-cost {
+            font-size: 14px;
+            color: #666;
+            text-align: right;
+            margin-bottom: 20px;
+        }
+
+        .form-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+
+        .btn-primary {
+            background-color: #0066cc;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #0055aa;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+        /* Футер */
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 20px 0;
+            margin-top: 40px;
+            text-align: center;
+            position: sticky;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .footer-text {
+            font-size: 14px;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .main-content {
+                padding: 15px;
+            }
+
+            .cart-items {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+
+            .form-row {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .form-group {
+                min-width: 100%;
+            }
+
+            .total-cost {
+                text-align: center;
+            }
+
+            .delivery-cost {
+                text-align: center;
+            }
+
+            .form-buttons {
+                flex-direction: column;
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-container {
+                padding: 10px;
+            }
+
+            .logo {
+                font-size: 20px;
+            }
+
+            .cart-item-image {
+                height: 150px;
+            }
+
+            .cart-item-info {
+                padding: 10px;
+            }
+
+            .cart-item-name {
+                font-size: 14px;
+            }
+
+            .cart-item-price {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .cart-item-actual-price {
+                font-size: 16px;
+            }
+
+            .form-input {
+                font-size: 12px;
+            }
+
+            .form-textarea {
+                font-size: 12px;
+            }
+
+            .total-cost {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Хедер -->
+    <header>
+        <div class="header-container">
+            <div class="logo">Техномагазин</div>
+            <div class="header-icons">
+                <div class="icon" id="home-icon">🏠</div>
+                <div class="icon" id="account-icon">👤</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Уведомление -->
+    <div class="notification" id="notification">
+        <span id="notification-message">Текст сообщения</span>
+        <span class="notification-close" id="notification-close">×</span>
+    </div>
+
+    <!-- Основной контент -->
+    <div class="container">
+        <div class="main-content">
+            <h1 class="cart-header">Корзина</h1>
+            
+            <!-- Товары в корзине -->
+            <div class="cart-items" id="cart-items">
+                <!-- Товары будут загружены через JavaScript -->
+            </div>
+            
+            <!-- Форма оформления заказа -->
+            <div class="order-form">
+                <h2 class="order-form-header">Оформление заказа</h2>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Имя</label>
+                        <input type="text" class="form-input" id="order-name" placeholder="Иванов Иван">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Адрес доставки</label>
+                        <input type="text" class="form-input" id="order-address" placeholder="ул. Большая Семёновская, 38">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Номер телефона</label>
+                        <input type="text" class="form-input" id="order-phone" placeholder="+74952230523">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Дата доставки</label>
+                        <input type="date" class="form-input" id="order-delivery-date" value="2025-01-11">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-input" id="order-email" placeholder="example@mospolytech.ru">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Временной интервал доставки</label>
+                        <select class="form-input" id="order-delivery-time">
+                            <option value="08:00-12:00">08:00-12:00</option>
+                            <option value="12:00-18:00">12:00-18:00</option>
+                            <option value="18:00-22:00" selected>18:00-22:00</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Комментарий</label>
+                        <textarea class="form-textarea" id="order-comment" placeholder="Текст комментария"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-checkbox">
+                            <input type="checkbox" id="subscribe-checkbox">
+                            <label for="subscribe-checkbox">Подписаться на рассылку</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="total-cost" id="total-cost">Итоговая стоимость: 0 ₽</div>
+                <div class="delivery-cost" id="delivery-cost">(стоимость доставки 0 ₽)</div>
+                
+                <div class="form-buttons">
+                    <button class="btn btn-secondary" id="reset-button">Сбросить</button>
+                    <button class="btn btn-primary" id="place-order-button">Оформить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Футер -->
+    <footer>
+        <div class="footer-content">
+            <p class="footer-text">© 2025 Техномагазин. Все права защищены.</p>
+            <p class="footer-text">Контакты: info@technomagazin.ru | +7 (495) 123-45-67</p>
+        </div>
+    </footer>
+
+    <script>
+        // Глобальные переменные
+        const API_KEY = '0e55ab01-f559-4713-9470-81feb98eb9b7';
+        const BASE_URL = 'https://webdev-exam.std-900.ist.mospolytech.ru/exam-2024-1/api';
+        
+        // Инициализация при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            loadCartItems();
+            setupEventListeners();
+        });
+
+        // Настройка обработчиков событий
+        function setupEventListeners() {
+            // Переход на главную страницу
+            document.getElementById('home-icon').addEventListener('click', function() {
+                window.location.href = 'index.html';
+            });
+            
+            // Переход в личный кабинет
+            document.getElementById('account-icon').addEventListener('click', function() {
+                window.location.href = 'orders.html';
+            });
+            
+            // Обновление стоимости при изменении данных
+            document.getElementById('order-delivery-date').addEventListener('change', updateTotalCost);
+            document.getElementById('order-delivery-time').addEventListener('change', updateTotalCost);
+            
+            // Сброс формы
+            document.getElementById('reset-button').addEventListener('click', resetForm);
+            
+            // Оформление заказа
+            document.getElementById('place-order-button').addEventListener('click', placeOrder);
+            
+            // Уведомления
+            document.getElementById('notification-close').addEventListener('click', hideNotification);
+        }
+
+        // Загрузка товаров из корзины
+        async function loadCartItems() {
+            try {
+                // Получаем корзину из localStorage
+                const cart = JSON.parse(localStorage.getItem('cart')) || [];
+                
+                if (cart.length === 0) {
+                    document.getElementById('cart-items').innerHTML = '<div class="empty-cart">Корзина пуста. Перейдите в каталог, чтобы добавить товары.</div>';
+                    updateTotalCost();
+                    return;
+                }
+                
+                // Загружаем данные о товарах
+                const goodsPromises = cart.map(id => getGoodById(id));
+                const goods = await Promise.all(goodsPromises);
+                
+                // Отображаем товары
+                displayCartItems(goods);
+                
+                // Обновляем общую стоимость
+                updateTotalCost();
+                
+            } catch (error) {
+                showNotification('Ошибка при загрузке товаров из корзины: ' + error.message, 'error');
+            }
+        }
+
+        // Получение товара по ID
+        async function getGoodById(id) {
+            try {
+                const response = await fetch(`${BASE_URL}/goods/${id}`, {
+                    headers: {
+                        'X-API-KEY': API_KEY
+                    }
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`Ошибка HTTP: ${response.status}`);
+                }
+                
+                return await response.json();
+                
+            } catch (error) {
+                console.error(`Ошибка при получении товара с ID ${id}:`, error);
+                return null;
+            }
+        }
+
+        // Отображение товаров в корзине
+        function displayCartItems(goods) {
+            const cartItemsContainer = document.getElementById('cart-items');
+            cartItemsContainer.innerHTML = '';
+            
+            goods.forEach(good => {
+                if (!good) return;
+                
+                // Рейтинг в звездочках
+                const ratingStars = Array.from({length: 5}, (_, i) => {
+                    const starClass = i < Math.floor(good.rating) ? 'star' : 'star empty';
+                    return `<span class="${starClass}">★</span>`;
+                }).join('');
+                
+                // Цена (со скидкой или без)
+                let priceHtml = '';
+                if (good.discount_price && good.discount_price < good.actual_price) {
+                    const discountPercent = Math.round(((good.actual_price - good.discount_price) / good.actual_price) * 100);
+                    priceHtml = `
+                        <div class="cart-item-price">
+                            <span class="cart-item-actual-price">${good.discount_price} ₽</span>
+                            <span class="cart-item-discount-price">${good.actual_price} ₽</span>
+                            <span class="cart-item-discount-percent">-${discountPercent}%</span>
+                        </div>
+                    `;
+                } else {
+                    priceHtml = `
+                        <div class="cart-item-price">
+                            <span class="cart-item-actual-price">${good.actual_price} ₽</span>
+                        </div>
+                    `;
+                }
+                
+                const cartItem = document.createElement('div');
+                cartItem.className = 'cart-item';
+                cartItem.innerHTML = `
+                    <img src="${good.image_url || 'https://via.placeholder.com/200'}" alt="${good.name}" class="cart-item-image">
+                    <div class="cart-item-info">
+                        <h3 class="cart-item-name">${good.name}</h3>
+                        <div class="cart-item-rating">
+                            <span>${good.rating.toFixed(1)}</span>
+                            <div class="cart-item-stars">${ratingStars}</div>
+                        </div>
+                        ${priceHtml}
+                        <button class="remove-from-cart" data-id="${good.id}">Удалить</button>
+                    </div>
+                `;
+                
+                cartItemsContainer.appendChild(cartItem);
+            });
+            
+            // Добавляем обработчики для кнопок "Удалить"
+            document.querySelectorAll('.remove-from-cart').forEach(button => {
+                button.addEventListener('click', removeFromCart);
+            });
+        }
+
+        // Удаление товара из корзины
+        function removeFromCart(event) {
+            const goodId = event.target.dataset.id;
+            
+            // Получаем текущую корзину из localStorage
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            
+            // Удаляем товар из корзины
+            const index = cart.indexOf(goodId);
+            if (index > -1) {
+                cart.splice(index, 1);
+                localStorage.setItem('cart', JSON.stringify(cart));
+                showNotification('Товар удален из корзины', 'success');
+                loadCartItems(); // Перезагружаем корзину
+            }
+        }
+
+        // Обновление общей стоимости
+        function updateTotalCost() {
+            try {
+                // Получаем корзину из localStorage
+                const cart = JSON.parse(localStorage.getItem('cart')) || [];
+                
+                if (cart.length === 0) {
+                    document.getElementById('total-cost').textContent = 'Итоговая стоимость: 0 ₽';
+                    document.getElementById('delivery-cost').textContent = '(стоимость доставки 0 ₽)';
+                    return;
+                }
+                
+                // Загружаем данные о товарах
+                const goodsPromises = cart.map(id => getGoodById(id));
+                Promise.all(goodsPromises).then(goods => {
+                    // Рассчитываем стоимость товаров
+                    let goodsCost = 0;
+                    goods.forEach(good => {
+                        if (good) {
+                            goodsCost += good.discount_price || good.actual_price;
+                        }
+                    });
+                    
+                    // Рассчитываем стоимость доставки
+                    let deliveryCost = 200; // Базовая стоимость доставки
+                    
+                    const deliveryDate = document.getElementById('order-delivery-date').value;
+                    const deliveryTime = document.getElementById('order-delivery-time').value;
+                    
+                    if (deliveryDate) {
+                        const date = new Date(deliveryDate);
+                        const dayOfWeek = date.getDay(); // 0 - воскресенье, 1 - понедельник, ..., 6 - суббота
+                        
+                        // Выходные дни (суббота и воскресенье)
+                        if (dayOfWeek === 0 || dayOfWeek === 6) {
+                            deliveryCost += 300;
+                        } 
+                        // Будние дни в вечернее время (с 18:00)
+                        else if (deliveryTime.startsWith('18:') || deliveryTime.startsWith('19:') || deliveryTime.startsWith('20:') || deliveryTime.startsWith('21:') || deliveryTime.startsWith('22:')) {
+                            deliveryCost += 200;
+                        }
+                    }
+                    
+                    // Итоговая стоимость
+                    const totalCost = goodsCost + deliveryCost;
+                    
+                    // Обновляем отображение
+                    document.getElementById('total-cost').textContent = `Итоговая стоимость: ${totalCost} ₽`;
+                    document.getElementById('delivery-cost').textContent = `(стоимость доставки ${deliveryCost} ₽)`;
+                    
+                });
+                
+            } catch (error) {
+                console.error('Ошибка при расчете стоимости:', error);
+            }
+        }
+
+        // Сброс формы
+        function resetForm() {
+            document.getElementById('order-name').value = '';
+            document.getElementById('order-phone').value = '';
+            document.getElementById('order-email').value = '';
+            document.getElementById('order-address').value = '';
+            document.getElementById('order-delivery-date').value = '';
+            document.getElementById('order-delivery-time').value = '08:00-12:00';
+            document.getElementById('order-comment').value = '';
+            document.getElementById('subscribe-checkbox').checked = false;
+            updateTotalCost();
+        }
+
+        // Оформление заказа
+        async function placeOrder() {
+            try {
+                // Получаем корзину из localStorage
+                const cart = JSON.parse(localStorage.getItem('cart')) || [];
+                
+                if (cart.length === 0) {
+                    showNotification('Корзина пуста. Добавьте товары перед оформлением заказа.', 'info');
+                    return;
+                }
+                
+                // Получаем данные формы
+                const orderData = {
+                    name: document.getElementById('order-name').value.trim(),
+                    phone: document.getElementById('order-phone').value.trim(),
+                    email: document.getElementById('order-email').value.trim(),
+                    address: document.getElementById('order-address').value.trim(),
+                    delivery_date: document.getElementById('order-delivery-date').value,
+                    delivery_time: document.getElementById('order-delivery-time').value,
+                    comment: document.getElementById('order-comment').value.trim(),
+                    subscribe: document.getElementById('subscribe-checkbox').checked,
+                    goods_ids: cart
+                };
+                
+                // Проверка обязательных полей
+                if (!orderData.name || !orderData.phone || !orderData.email || !orderData.address || !orderData.delivery_date) {
+                    showNotification('Заполните все обязательные поля', 'error');
+                    return;
+                }
+                
+                // Отправка POST-запроса на сервер
+                const response = await fetch(`${BASE_URL}/orders`, {
+                    method: 'POST',
+                    headers: {
+                        'X-API-KEY': API_KEY,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(orderData)
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`Ошибка HTTP: ${response.status}`);
+                }
+                
+                const result = await response.json();
+                
+                // Очистка корзины
+                localStorage.removeItem('cart');
+                
+                // Показ уведомления
+                showNotification('Заказ успешно оформлен!', 'success');
+                
+                // Перенаправление на главную страницу
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 2000);
+                
+            } catch (error) {
+                showNotification('Ошибка при оформлении заказа: ' + error.message, 'error');
+            }
+        }
+
+        // Показ уведомления
+        function showNotification(message, type = 'info') {
+            const notification = document.getElementById('notification');
+            const notificationMessage = document.getElementById('notification-message');
+            
+            notificationMessage.textContent = message;
+            notification.className = `notification ${type} show`;
+            
+            // Автоматическое скрытие через 5 секунд
+            setTimeout(() => {
+                hideNotification();
+            }, 5000);
+        }
+
+        // Скрытие уведомления
+        function hideNotification() {
+            const notification = document.getElementById('notification');
+            notification.classList.remove('show');
+        }
+    </script>
+</body>
+</html>
