@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Техномагазин - Главная</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Хедер -->
+    <header>
+        <div class="header-container">
+            <div class="logo">Техномагазин</div>
+            <div class="search-bar">
+                <input type="text" placeholder="Введите запрос">
+                <button>Найти</button>
+            </div>
+            <div class="header-icons">
+                <div class="icon" id="cart-icon">🛒</div>
+                <div class="icon" id="account-icon">👤</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Уведомление -->
+    <div class="notification" id="notification">
+        <span id="notification-message">Текст сообщения</span>
+        <span class="notification-close" id="notification-close">×</span>
+    </div>
+
+    <!-- Основной контент -->
+    <div class="container">
+        <div class="main-content">
+            <!-- Сайдбар -->
+            <div class="sidebar">
+                <h3>Фильтры</h3>
+                <div class="filter-section">
+                    <h4>Категории</h4>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" value="electronics"> Электроника</label>
+                        <label><input type="checkbox" value="computers"> Компьютеры</label>
+                        <label><input type="checkbox" value="phones"> Смартфоны</label>
+                        <label><input type="checkbox" value="tablets"> Планшеты</label>
+                        <label><input type="checkbox" value="accessories"> Аксессуары</label>
+                    </div>
+                </div>
+                <div class="filter-section">
+                    <h4>Стоимость</h4>
+                    <div class="price-filter">
+                        <div><label>От</label><input type="number" id="price-from" value="100" min="0"></div>
+                        <div><label>До</label><input type="number" id="price-to" value="5000" min="0"></div>
+                    </div>
+                </div>
+                <div class="filter-section">
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" id="discount-only"> Только товары со скидками</label>
+                    </div>
+                </div>
+                <button class="apply-button">Применить</button>
+            </div>
+
+            <!-- Каталог товаров -->
+            <div class="catalog">
+                <div class="catalog-header">
+                    <h2 class="catalog-title">Каталог</h2>
+                    <select class="sort-dropdown" id="sort-order">
+                        <option value="rating_desc">По убыванию рейтинга</option>
+                        <option value="rating_asc">По возрастанию рейтинга</option>
+                        <option value="price_asc">По возрастанию цены</option>
+                        <option value="price_desc">По убыванию цены</option>
+                    </select>
+                </div>
+                <div class="goods-grid" id="goods-grid"></div>
+                <button class="load-more" id="load-more">Загрузить ещё</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Футер -->
+    <footer>
+        <div class="footer-content">
+            <p class="footer-text">© 2025 Техномагазин. Все права защищены.</p>
+            <p class="footer-text">Контакты: info@technomagazin.ru | +7 (495) 123-45-67</p>
+        </div>
+    </footer>
+
+    <!-- Модальные окна -->
+    <div class="modal-overlay" id="view-order-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Просмотр заказа</h3>
+                <span class="modal-close" id="view-order-close">×</span>
+            </div>
+            <div class="modal-form">
+                <div class="form-group"><label class="form-label">Дата оформления</label><div id="view-order-date"></div></div>
+                <div class="form-group"><label class="form-label">Имя</label><div id="view-order-name"></div></div>
+                <div class="form-group"><label class="form-label">Телефон</label><div id="view-order-phone"></div></div>
+                <div class="form-group"><label class="form-label">Email</label><div id="view-order-email"></div></div>
+                <div class="form-group"><label class="form-label">Адрес</label><div id="view-order-address"></div></div>
+                <div class="form-group"><label class="form-label">Доставка</label><div id="view-order-delivery-date"></div></div>
+                <div class="form-group"><label class="form-label">Время</label><div id="view-order-delivery-time"></div></div>
+                <div class="form-group"><label class="form-label">Состав</label><div id="view-order-items"></div></div>
+                <div class="form-group"><label class="form-label">Стоимость</label><div id="view-order-total"></div></div>
+                <div class="form-group"><label class="form-label">Комментарий</label><div id="view-order-comment"></div></div>
+                <div class="modal-buttons">
+                    <button class="btn btn-secondary" id="view-order-ok">Ок</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="edit-order-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Редактирование заказа</h3>
+                <span class="modal-close" id="edit-order-close">×</span>
+            </div>
+            <div class="modal-form">
+                <div class="form-group"><label class="form-label">Дата оформления</label><div id="edit-order-date"></div></div>
+                <div class="form-group"><label class="form-label">Имя</label><input type="text" class="form-input" id="edit-order-name"></div>
+                <div class="form-group"><label class="form-label">Телефон</label><input type="text" class="form-input" id="edit-order-phone"></div>
+                <div class="form-group"><label class="form-label">Email</label><input type="email" class="form-input" id="edit-order-email"></div>
+                <div class="form-group"><label class="form-label">Адрес</label><input type="text" class="form-input" id="edit-order-address"></div>
+                <div class="form-group"><label class="form-label">Дата доставки</label><input type="date" class="form-input" id="edit-order-delivery-date"></div>
+                <div class="form-group"><label class="form-label">Время</label><select class="form-input" id="edit-order-delivery-time">
+                    <option value="08:00-12:00">08:00–12:00</option>
+                    <option value="12:00-18:00">12:00–18:00</option>
+                    <option value="18:00-22:00">18:00–22:00</option>
+                </select></div>
+                <div class="form-group"><label class="form-label">Состав</label><div id="edit-order-items"></div></div>
+                <div class="form-group"><label class="form-label">Стоимость</label><div id="edit-order-total"></div></div>
+                <div class="form-group"><label class="form-label">Комментарий</label><textarea class="form-textarea" id="edit-order-comment"></textarea></div>
+                <div class="modal-buttons">
+                    <button class="btn btn-secondary" id="edit-order-cancel">Отмена</button>
+                    <button class="btn btn-primary" id="edit-order-save">Сохранить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="delete-order-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Удаление заказа</h3>
+                <span class="modal-close" id="delete-order-close">×</span>
+            </div>
+            <div class="modal-form">
+                <p>Вы уверены, что хотите удалить заказ?</p>
+                <div class="modal-buttons">
+                    <button class="btn btn-secondary" id="delete-order-no">Нет</button>
+                    <button class="btn btn-danger" id="delete-order-yes">Да</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="catalog.js"></script>
+</body>
+</html>

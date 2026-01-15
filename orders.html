@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Техномагазин - Заказы</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">Техномагазин</div>
+            <div class="header-icons">
+                <div class="icon" id="home-icon">🏠</div>
+                <div class="icon" id="cart-icon">🛒</div>
+            </div>
+        </div>
+    </header>
+
+    <div class="notification" id="notification">
+        <span id="notification-message">Текст сообщения</span>
+        <span class="notification-close" id="notification-close">×</span>
+    </div>
+
+    <div class="container">
+        <div class="main-content">
+            <h1 class="orders-header">Заказы</h1>
+            <table class="orders-table">
+                <thead>
+                    <tr>
+                        <th>№</th>
+                        <th>Дата оформления</th>
+                        <th>Состав заказа</th>
+                        <th>Стоимость</th>
+                        <th>Доставка</th>
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+                <tbody id="orders-body"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <p class="footer-text">© 2025 Техномагазин. Все права защищены.</p>
+            <p class="footer-text">Контакты: info@technomagazin.ru | +7 (495) 123-45-67</p>
+        </div>
+    </footer>
+
+    <!-- Модальные окна (те же, что и в index.html) -->
+    <div class="modal-overlay" id="view-order-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Просмотр заказа</h3>
+                <span class="modal-close" id="view-order-close">×</span>
+            </div>
+            <div class="modal-form">
+                <div class="form-group"><label class="form-label">Дата оформления</label><div id="view-order-date"></div></div>
+                <div class="form-group"><label class="form-label">Имя</label><div id="view-order-name"></div></div>
+                <div class="form-group"><label class="form-label">Телефон</label><div id="view-order-phone"></div></div>
+                <div class="form-group"><label class="form-label">Email</label><div id="view-order-email"></div></div>
+                <div class="form-group"><label class="form-label">Адрес</label><div id="view-order-address"></div></div>
+                <div class="form-group"><label class="form-label">Доставка</label><div id="view-order-delivery-date"></div></div>
+                <div class="form-group"><label class="form-label">Время</label><div id="view-order-delivery-time"></div></div>
+                <div class="form-group"><label class="form-label">Состав</label><div id="view-order-items"></div></div>
+                <div class="form-group"><label class="form-label">Стоимость</label><div id="view-order-total"></div></div>
+                <div class="form-group"><label class="form-label">Комментарий</label><div id="view-order-comment"></div></div>
+                <div class="modal-buttons">
+                    <button class="btn btn-secondary" id="view-order-ok">Ок</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="edit-order-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Редактирование заказа</h3>
+                <span class="modal-close" id="edit-order-close">×</span>
+            </div>
+            <div class="modal-form">
+                <div class="form-group"><label class="form-label">Дата оформления</label><div id="edit-order-date"></div></div>
+                <div class="form-group"><label class="form-label">Имя</label><input type="text" class="form-input" id="edit-order-name"></div>
+                <div class="form-group"><label class="form-label">Телефон</label><input type="text" class="form-input" id="edit-order-phone"></div>
+                <div class="form-group"><label class="form-label">Email</label><input type="email" class="form-input" id="edit-order-email"></div>
+                <div class="form-group"><label class="form-label">Адрес</label><input type="text" class="form-input" id="edit-order-address"></div>
+                <div class="form-group"><label class="form-label">Дата доставки</label><input type="date" class="form-input" id="edit-order-delivery-date"></div>
+                <div class="form-group"><label class="form-label">Время</label><select class="form-input" id="edit-order-delivery-time">
+                    <option value="08:00-12:00">08:00–12:00</option>
+                    <option value="12:00-18:00">12:00–18:00</option>
+                    <option value="18:00-22:00">18:00–22:00</option>
+                </select></div>
+                <div class="form-group"><label class="form-label">Состав</label><div id="edit-order-items"></div></div>
+                <div class="form-group"><label class="form-label">Стоимость</label><div id="edit-order-total"></div></div>
+                <div class="form-group"><label class="form-label">Комментарий</label><textarea class="form-textarea" id="edit-order-comment"></textarea></div>
+                <div class="modal-buttons">
+                    <button class="btn btn-secondary" id="edit-order-cancel">Отмена</button>
+                    <button class="btn btn-primary" id="edit-order-save">Сохранить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="delete-order-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Удаление заказа</h3>
+                <span class="modal-close" id="delete-order-close">×</span>
+            </div>
+            <div class="modal-form">
+                <p>Вы уверены, что хотите удалить заказ?</p>
+                <div class="modal-buttons">
+                    <button class="btn btn-secondary" id="delete-order-no">Нет</button>
+                    <button class="btn btn-danger" id="delete-order-yes">Да</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="orders.js"></script>
+</body>
+</html>

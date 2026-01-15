@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Техномагазин - Корзина</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">Техномагазин</div>
+            <div class="header-icons">
+                <div class="icon" id="home-icon">🏠</div>
+                <div class="icon" id="account-icon">👤</div>
+            </div>
+        </div>
+    </header>
+
+    <div class="notification" id="notification">
+        <span id="notification-message">Текст сообщения</span>
+        <span class="notification-close" id="notification-close">×</span>
+    </div>
+
+    <div class="container">
+        <div class="main-content">
+            <h1 class="cart-header">Корзина</h1>
+            <div class="cart-items" id="cart-items"></div>
+
+            <div class="order-form">
+                <h2 class="order-form-header">Оформление заказа</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Имя</label>
+                        <input type="text" class="form-input" id="order-name" placeholder="Иван Иванов">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Адрес доставки</label>
+                        <input type="text" class="form-input" id="order-address" placeholder="ул. Большая Семёновская, 38">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Телефон</label>
+                        <input type="text" class="form-input" id="order-phone" placeholder="+7 (999) 123-45-67">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Дата доставки</label>
+                        <input type="date" class="form-input" id="order-delivery-date">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-input" id="order-email" placeholder="user@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Время доставки</label>
+                        <select class="form-input" id="order-delivery-time">
+                            <option value="08:00-12:00">08:00–12:00</option>
+                            <option value="12:00-18:00">12:00–18:00</option>
+                            <option value="18:00-22:00">18:00–22:00</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Комментарий</label>
+                        <textarea class="form-textarea" id="order-comment" placeholder="Уточните детали доставки..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-checkbox">
+                            <input type="checkbox" id="subscribe-checkbox">
+                            <label for="subscribe-checkbox">Подписаться на рассылку</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="total-cost" id="total-cost">Итоговая стоимость: 0 ₽</div>
+                <div class="delivery-cost" id="delivery-cost">(стоимость доставки 0 ₽)</div>
+                <div class="form-buttons">
+                    <button class="btn btn-secondary" id="reset-button">Сбросить</button>
+                    <button class="btn btn-primary" id="place-order-button">Оформить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <p class="footer-text">© 2025 Техномагазин. Все права защищены.</p>
+            <p class="footer-text">Контакты: info@technomagazin.ru | +7 (495) 123-45-67</p>
+        </div>
+    </footer>
+
+    <script type="module" src="cart.js"></script>
+</body>
+</html>
