@@ -1,46 +1,34 @@
 // api.js
 const API_KEY = '0e55ab01-f559-4713-9470-81feb98eb9b7';
 
-function getApiUrl(endpoint) {
-  return `https://edu.std-900.ist.mospolytech.ru${endpoint}?api_key=${API_KEY}`;
-}
-
-export async function fetchGoods(params = {}) {
-  const { page = 1, per_page = 100, sort_order = 'rating_desc', query = '' } = params;
-  const url = new URL(getApiUrl('/exam-2024-1/api/goods'));
+export async function fetchGoodsPage(page = 1, per_page = 10, sort_order = 'rating_desc') {
+  const url = new URL('https://edu.std-900.ist.mospolytech.ru/exam-2024-1/api/goods');
+  url.searchParams.append('api_key', API_KEY);
   url.searchParams.append('page', page);
   url.searchParams.append('per_page', per_page);
-  if (query) url.searchParams.append('query', query);
-
-  const sortMapping = {
-    'rating_asc': 'rating_asc',
-    'rating_desc': 'rating_desc',
-    'price_asc': 'price_asc',
-    'price_desc': 'price_desc'
-  };
-  url.searchParams.append('sort_order', sortMapping[sort_order] || 'rating_desc');
+  url.searchParams.append('sort_order', sort_order);
 
   const response = await fetch(url.toString());
   if (!response.ok) throw new Error(`HTTP ${response.status}`);
-  return await response.json();
+  return await response.json(); // { _pagination, goods }
 }
 
 export async function fetchGoodById(id) {
-  const url = getApiUrl(`/exam-2024-1/api/goods/${id}`);
+  const url = `https://edu.std-900.ist.mospolytech.ru/exam-2024-1/api/goods/${id}?api_key=${API_KEY}`;
   const response = await fetch(url);
   if (!response.ok) throw new Error(`HTTP ${response.status}`);
   return await response.json();
 }
 
 export async function fetchOrders() {
-  const url = getApiUrl('/exam-2024-1/api/orders');
+  const url = `https://edu.std-900.ist.mospolytech.ru/exam-2024-1/api/orders?api_key=${API_KEY}`;
   const response = await fetch(url);
   if (!response.ok) throw new Error(`HTTP ${response.status}`);
   return await response.json();
 }
 
 export async function createOrder(orderData) {
-  const url = getApiUrl('/exam-2024-1/api/orders');
+  const url = `https://edu.std-900.ist.mospolytech.ru/exam-2024-1/api/orders?api_key=${API_KEY}`;
   const preparedData = {
     full_name: orderData.name,
     email: orderData.email,
@@ -67,7 +55,7 @@ export async function createOrder(orderData) {
 }
 
 export async function updateOrder(orderId, orderData) {
-  const url = getApiUrl(`/exam-2024-1/api/orders/${orderId}`);
+  const url = `https://edu.std-900.ist.mospolytech.ru/exam-2024-1/api/orders/${orderId}?api_key=${API_KEY}`;
   const preparedData = {};
   if (orderData.name !== undefined) preparedData.full_name = orderData.name;
   if (orderData.email !== undefined) preparedData.email = orderData.email;
@@ -92,7 +80,7 @@ export async function updateOrder(orderId, orderData) {
 }
 
 export async function deleteOrder(orderId) {
-  const url = getApiUrl(`/exam-2024-1/api/orders/${orderId}`);
+  const url = `https://edu.std-900.ist.mospolytech.ru/exam-2024-1/api/orders/${orderId}?api_key=${API_KEY}`;
   const response = await fetch(url, { method: 'DELETE' });
   if (!response.ok) {
     const errorText = await response.text();
