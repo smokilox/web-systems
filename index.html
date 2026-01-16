@@ -12,7 +12,7 @@
         <div class="header-container">
             <div class="logo">Техномагазин</div>
             <div class="search-bar">
-                <input type="text" placeholder="Поиск товаров...">
+                <input type="text" placeholder="Поиск по названию...">
                 <button>Найти</button>
             </div>
             <div class="header-icons">
@@ -31,10 +31,38 @@
     <!-- Основной контент -->
     <div class="container">
         <div class="main-content">
-            <!-- Сайдбар: фильтры отключены (API не поддерживает) -->
+            <!-- Сайдбар с фильтрами -->
             <div class="sidebar">
                 <h3>Фильтры</h3>
-                <p style="font-size:14px;color:#666;">Фильтрация недоступна<br>(ограничение API)</p>
+                
+                <div class="filter-section">
+                    <h4>Категории</h4>
+                    <div class="checkbox-group" id="categories-filter">
+                        <!-- Динамически заполняется из JS -->
+                    </div>
+                </div>
+                
+                <div class="filter-section">
+                    <h4>Стоимость</h4>
+                    <div class="price-filter">
+                        <div>
+                            <label>От</label>
+                            <input type="number" id="price-from" value="0" min="0">
+                        </div>
+                        <div>
+                            <label>До</label>
+                            <input type="number" id="price-to" value="10000" min="0">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="filter-section">
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" id="discount-only"> Только товары со скидками</label>
+                    </div>
+                </div>
+                
+                <button class="apply-button">Применить</button>
             </div>
             
             <!-- Каталог товаров -->
